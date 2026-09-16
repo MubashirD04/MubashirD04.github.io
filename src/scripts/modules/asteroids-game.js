@@ -11,6 +11,10 @@ export function setupAsteroidsGame() {
     const canvas = document.getElementById('gameCanvas');
     if (!trigger || !exitBtn || !canvas) return;
 
+    const frontFace = document.querySelector('.card-face-front');
+    const backFace = document.querySelector('.card-face-back');
+    backFace.inert = true;
+
     const ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = false;
 
@@ -33,6 +37,8 @@ export function setupAsteroidsGame() {
         if (active) return;
         active = true;
         trigger.blur();
+        frontFace.inert = true;
+        backFace.inert = false;
         document.body.classList.add('game-active');
         document.getElementById('gameArena').setAttribute('aria-hidden', 'false');
         resetState();
@@ -54,6 +60,8 @@ export function setupAsteroidsGame() {
         if (rafId) cancelAnimationFrame(rafId);
         rafId = null;
         releaseKeys();
+        backFace.inert = true;
+        frontFace.inert = false;
         trigger.focus();
     }
 

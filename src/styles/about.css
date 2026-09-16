@@ -180,6 +180,11 @@
 .card-face {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  /* a backdrop-filter flattens the 3D context, which makes Firefox ignore
+     backface-visibility and show the other face through this one */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: var(--card-solid);
 }
 .card-face-front {
   margin: 0;

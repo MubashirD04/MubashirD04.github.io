@@ -5,6 +5,7 @@
     --secondary-color: #3b7fa8;
     --bg-light: #eff8fd; /*#6797b3 */
     --card-bg: rgba(255, 255, 255, 0.7);
+    --card-solid: #f7fbfe; /* --card-bg composited over --bg-light, for 3D-transformed cards */
     --text-main: #053155;
     --text-light: #0e669d;
     --text-muted: #476278;
@@ -24,6 +25,7 @@
 [data-theme="dark"] {
     --bg-light: #0d131a;
     --card-bg: rgba(20, 30, 41, 0.6);
+    --card-solid: #121b24;
     --text-main: #eef5fa;
     --text-muted: #9bb1c2;
     --glass-border: rgba(74, 159, 211, 0.15);
