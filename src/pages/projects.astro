@@ -71,25 +71,84 @@ import Layouts from "../layouts/layouts.astro";
                         <h3>Social Network RAG</h3>
                         <span class="accordion-icon"></span>
                     </div>
-                    <p class="accordion-desc">A tool that analyzes social networks and provides insights into the structure and dynamics of the network.</p>
+                    <p class="accordion-desc">A tool that turns raw group chat exports into an interactive social graph, exposed via an API, MCP server, and web UI.</p>
                 </div>
                 <div class="case-study-content-wrapper">
                     <div class="case-study-content">
                         <div class="case-study-info">
                         <h4>Overview</h4>
-                        <p>A social network analysis tool that turns raw group chat exports into an interactive graph and exposes that analysis as an API and MCP server, allowing easy integration for AI models. 
-                            Drop in a chat file, get back a structured map of who influences who, who brokers information between groups, and what the team is talking about.
+                        <p>Turns raw group chat exports (WhatsApp, Telegram, Slack) into an interactive directed graph using local machine learning, with no external LLM API costs for the core analysis.
+                            It identifies key influencers (PageRank), information brokers (betweenness centrality), and community clusters, and supports semantic search (RAG) over the full conversation history.
+                            A conversation-linking layer also infers likely connections between unthreaded messages, kept visually distinct from confirmed replies so a guess never inflates anyone's influence score.
                             <a href="https://github.com/MubashirD04/Social-Network-RAG" target="_blank" style="color: var(--primary-color);">GitHub</a>
                         </p>
                     </div>
                     <div class="case-study-tech">
                         <h4>Tech Stack</h4>
                         <ul>
-                            <li>Uvicorn (Server)</li>
-                            <li>FastAPI (API)</li>
-                            <li>NetworkX, KeyBert (Analysis)</li>
-                            <li>Sentence Transformers (Embeddings)</li>
+                            <li>FastAPI, Uvicorn (API)</li>
+                            <li>NetworkX, YAKE (Graph & Topic Analysis)</li>
+                            <li>fastembed / ONNX Runtime (Embeddings)</li>
                             <li>MCP (Anthropic SDK)</li>
+                            <li>React, Vite (Web UI)</li>
+                        </ul>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card project-card" id="project-4">
+                <div class="accordion-header">
+                    <div class="accordion-title-row">
+                        <h3>Tab Bridge</h3>
+                        <span class="accordion-icon"></span>
+                    </div>
+                    <p class="accordion-desc">A Firefox extension + local MCP daemon that lets Claude read the HTML, console logs, network requests, and screenshots of tabs you explicitly allow.</p>
+                </div>
+                <div class="case-study-content-wrapper">
+                    <div class="case-study-content">
+                        <div class="case-study-info">
+                        <h4>Overview</h4>
+                        <p>Lets Claude Code (or Claude Desktop) read the HTML, console logs, network requests, and screenshots of specific Firefox tabs you explicitly allow, plus any tab on a trusted local dev server, without a manual click every time.
+                            A local daemon binds to 127.0.0.1 only, everything is read-only, and console/network capture is off by default until opted in per-tab.
+                            <a href="https://github.com/MubashirD04/Tab-bridge" target="_blank" style="color: var(--primary-color);">GitHub</a>
+                        </p>
+                    </div>
+                    <div class="case-study-tech">
+                        <h4>Tech Stack</h4>
+                        <ul>
+                            <li>TypeScript (Extension & Daemon)</li>
+                            <li>WebSocket (Token-authed transport)</li>
+                            <li>MCP (Claude Code / Desktop integration)</li>
+                            <li>Firefox WebExtensions API</li>
+                        </ul>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card project-card" id="project-5">
+                <div class="accordion-header">
+                    <div class="accordion-title-row">
+                        <h3>JASS 2025 Annual Report</h3>
+                        <span class="accordion-icon"></span>
+                    </div>
+                    <p class="accordion-desc">A microsite built for JASS's 2025 annual report.</p>
+                </div>
+                <div class="case-study-content-wrapper">
+                    <div class="case-study-content">
+                        <div class="case-study-info">
+                        <h4>Overview</h4>
+                        <p>A microsite built for JASS (Just Associates), presenting their 2025 annual report as an interactive web experience.
+                            <a href="https://justassociates.org/mc/ar/2025/" target="_blank" style="color: var(--primary-color);">Visit Site</a>
+                        </p>
+                    </div>
+                    <div class="case-study-tech">
+                        <h4>Tech Stack</h4>
+                        <ul>
+                            <li>HTML</li>
+                            <li>CSS</li>
+                            <li>Vanilla JavaScript</li>
                         </ul>
                     </div>
                     </div>
