@@ -152,14 +152,14 @@
     padding: 200px 24vh 130px;
 }
 
-#about-cta h1 {
+#about-cta h2 {
     position: relative;
     padding-bottom: 10px;
     display: inline-block;
     font-size: 56px;
 }
 
-#about-cta h1::after {
+#about-cta h2::after {
     content: '';
     position: absolute;
     bottom: -10px;
@@ -246,7 +246,7 @@
     }
 }
 
-.current-focus h1 {
+.current-focus h2 {
     font-size: 56px;
 }
 
@@ -272,14 +272,14 @@
     gap: 3rem;
 }
 
-.current-project-card h1 {
+.current-project-card h3 {
     position: relative;
     padding-bottom: 12px;
     display: inline-block;
     font-size: 42px;
 }
 
-.current-project-card h1::after {
+.current-project-card h3::after {
     content: '';
     position: absolute;
     bottom: 1px;
