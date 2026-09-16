@@ -5,6 +5,7 @@ import { setupTypewriter } from './modules/typewriter.js';
 import { setupAccordion } from './modules/accordion.js';
 import { setupProfileStats } from './modules/profile-stats.js';
 import { initChatbot } from './modules/chatbot.js';
+import { setupAsteroidsGame } from './modules/asteroids-game.js';
 
 function initPortfolio() {
     setupTheme();
@@ -14,6 +15,7 @@ function initPortfolio() {
     setupAccordion();
     setupProfileStats();
     initChatbot();
+    setupAsteroidsGame();
     console.log("Portfolio Initialized");
 }
 

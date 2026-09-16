@@ -129,12 +129,204 @@
   transition: width 1.2s cubic-bezier(0.1, 0.8, 0.2, 1);
 }
 
-.game-card .inventory { 
-  border-top: 1px solid var(--glass-border); 
-  padding-top: 12px; 
+.game-card .inventory {
+  border-top: 1px solid var(--glass-border);
+  padding-top: 12px;
 }
-.game-card .tags { 
-  display: flex; 
-  flex-wrap: wrap; 
-  gap: 6px; 
+.game-card .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* Astro Blaster: flip-card + arcade overlay */
+
+.skill-tag-game {
+  cursor: pointer;
+  position: relative;
+  border: 1px solid transparent;
+  transition: var(--transition-smooth);
+}
+.skill-tag-game:hover,
+.skill-tag-game:focus-visible {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.arcade-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin: 40px 0;
+  transition: gap 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.game-card-wrapper {
+  flex: 0 0 auto;
+  width: min(360px, 100%);
+  perspective: 1600px;
+}
+
+.game-card-inner {
+  position: relative;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.card-face-front {
+  margin: 0;
+}
+.card-face-back {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+}
+
+.leaderboard {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 4px 0 20px;
+  padding: 0;
+  counter-reset: rank;
+  flex: 1;
+}
+.leaderboard li {
+  counter-increment: rank;
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  padding: 6px 10px;
+  background: var(--footer-bg);
+  border: 1px solid var(--glass-border);
+}
+.leaderboard li::before {
+  content: counter(rank) ".";
+  color: var(--text-light);
+  font-weight: 700;
+  margin-right: 8px;
+}
+.lb-name {
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+.lb-score {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.leaderboard li.is-latest {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  font-weight: 700;
+}
+.leaderboard-empty {
+  color: var(--text-muted);
+  justify-content: center !important;
+  font-style: italic;
+}
+.leaderboard-empty::before {
+  content: "" !important;
+  margin: 0 !important;
+}
+
+.game-exit-btn {
+  margin-top: auto;
+  background: var(--footer-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+  font-family: var(--font-family);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  padding: 10px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+.game-exit-btn:hover,
+.game-exit-btn:focus-visible {
+  background: var(--primary-color);
+  color: #fff;
+  outline: none;
+}
+
+.game-arena {
+  flex: 0 0 auto;
+  width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+}
+
+.game-hud {
+  display: flex;
+  justify-content: space-between;
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+#gameCanvas {
+  width: 100%;
+  aspect-ratio: 384 / 240;
+  background: #05070c;
+  border: 2px solid var(--primary-color);
+  box-shadow: var(--glass-shadow);
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.game-hint {
+  font-family: "Courier New", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Active state, toggled on <body> by the game module */
+body.game-active .arcade-stage {
+  gap: 24px;
+}
+body.game-active .game-arena {
+  /* 112vh == 70vh scaled by the canvas' 1.6 aspect, so the board never outgrows the screen */
+  width: min(calc(100% - 384px), 112vh);
+  opacity: 1;
+  pointer-events: auto;
+}
+body.game-active .game-card-inner {
+  transform: rotateY(180deg);
+}
+
+@media (max-width: 860px) {
+  .arcade-stage {
+    flex-direction: column;
+  }
+  body.game-active .game-arena {
+    width: 100%;
+  }
+  .game-hint {
+    white-space: normal;
+  }
 }

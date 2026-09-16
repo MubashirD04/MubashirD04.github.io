@@ -9,70 +9,110 @@ import Contact from "../components/Contact.astro";
 >
   <h1 class="section-title">About Me</h1>
 
-  <div class="profile-card game-card">
-    <div class="card-header">
-      <small>Class: Software Engineer</small>
-      <h2>Mubashir</h2>
-    </div>
-
-    <div class="profile-grid">
-      <div class="avatar">
-        <span>🕹️</span>
-        <b>LVL 4</b>
-      </div>
-
-      <div class="perks">
-        <div>
-          <span class="perk-bullet" style="--clr: #4ade80">⚡</span> +50% Async Performance
+  <div class="arcade-stage" id="arcadeStage">
+    <div class="game-card-wrapper" id="gameCardWrapper">
+      <div class="game-card-inner" id="gameCardInner">
+      <div class="card-face card-face-front profile-card game-card">
+        <div class="card-header">
+          <small>Class: Software Engineer</small>
+          <h2>Mubashir</h2>
         </div>
-        <div>
-          <span class="perk-bullet" style="--clr: #fbbf24">🥊</span> Muay Thai Stance
-        </div>
-        <div>
-          <span class="perk-bullet" style="--clr: #f87171">🚗</span> Track Tuned Iteration
-        </div>
-      </div>
-    </div>
 
-    <!-- Attributes -->
-    <div class="attributes">
-      <h3>Attributes</h3>
+        <div class="profile-grid">
+          <div class="avatar">
+            <span>🕹️</span>
+            <b>LVL 4</b>
+          </div>
 
-      <div class="stat">
-        <label>Backend / Systems <span>80/100</span></label>
-        <div class="bar">
-          <div class="fill" style="--clr: var(--primary-color); --val: 80%">
+          <div class="perks">
+            <div>
+              <span class="perk-bullet" style="--clr: #4ade80">⚡</span> +50% Async Performance
+            </div>
+            <div>
+              <span class="perk-bullet" style="--clr: #fbbf24">🥊</span> Muay Thai Stance
+            </div>
+            <div>
+              <span class="perk-bullet" style="--clr: #f87171">🚗</span> Track Tuned Iteration
+            </div>
+          </div>
+        </div>
+
+        <!-- Attributes -->
+        <div class="attributes">
+          <h3>Attributes</h3>
+
+          <div class="stat">
+            <label>Backend / Systems <span>80/100</span></label>
+            <div class="bar">
+              <div class="fill" style="--clr: var(--primary-color); --val: 80%">
+              </div>
+            </div>
+          </div>
+
+          <div class="stat">
+            <label>Frontend / UI <span>60/100</span></label>
+            <div class="bar">
+              <div class="fill" style="--clr: #10b981; --val: 60%"></div>
+            </div>
+          </div>
+
+          <div class="stat">
+            <label>Data & Analytics <span>70/100</span></label>
+            <div class="bar">
+              <div class="fill" style="--clr: #a855f7; --val: 70%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inventory -->
+        <div class="inventory">
+          <h3>Equipped Inventory</h3>
+          <div class="tags">
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">SvelteKit</span>
+            <span
+              class="skill-tag skill-tag-game"
+              id="astroTrigger"
+              role="button"
+              tabindex="0"
+              aria-label="Launch the Astro Blaster arcade game"
+              title="Launch Astro Blaster"
+              >Astro</span
+            >
+            <span class="skill-tag">SQLite</span>
+            <span class="skill-tag">Go</span>
+            <span class="skill-tag">HuggingFace</span>
+            <span class="skill-tag">Groq</span>
           </div>
         </div>
       </div>
 
-      <div class="stat">
-        <label>Frontend / UI <span>60/100</span></label>
-        <div class="bar">
-          <div class="fill" style="--clr: #10b981; --val: 60%"></div>
+      <div class="card-face card-face-back game-card">
+        <div class="card-header">
+          <small>Arcade Mode</small>
+          <h2>Leaderboard</h2>
         </div>
-      </div>
 
-      <div class="stat">
-        <label>Data & Analytics <span>70/100</span></label>
-        <div class="bar">
-          <div class="fill" style="--clr: #a855f7; --val: 70%"></div>
-        </div>
+        <ol class="leaderboard" id="leaderboardList">
+          <li class="leaderboard-empty">No scores yet — go fly!</li>
+        </ol>
+
+        <button class="game-exit-btn" id="gameExitBtn" type="button">
+          ✕ Exit Game
+        </button>
+      </div>
       </div>
     </div>
 
-    <!-- Inventory -->
-    <div class="inventory">
-      <h3>Equipped Inventory</h3>
-      <div class="tags">
-        <span class="skill-tag">Python</span>
-        <span class="skill-tag">SvelteKit</span>
-        <span class="skill-tag">Astro</span>
-        <span class="skill-tag">SQLite</span>
-        <span class="skill-tag">Go</span>
-        <span class="skill-tag">HuggingFace</span>
-        <span class="skill-tag">Groq</span>
+    <div class="game-arena" id="gameArena" aria-hidden="true">
+      <div class="game-hud">
+        <span id="gameScore">SCORE 0000</span>
+        <span id="gameLives">♥ ♥ ♥</span>
       </div>
+      <canvas id="gameCanvas" width="384" height="240"></canvas>
+      <p class="game-hint">
+        WASD / ARROWS to move &middot; SPACE to fire &middot; ESC to exit
+      </p>
     </div>
   </div>
 
