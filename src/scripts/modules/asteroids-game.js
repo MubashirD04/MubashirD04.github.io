@@ -9,8 +9,10 @@ const STEP_MS = 1000 / 60;
 const MAX_CATCHUP_MS = 250;
 
 const RICKROLL_SCORE = 1000;
-const RICKROLL_SRC =
-    'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0&playsinline=1';
+const YT_ORIGIN = 'https://www.youtube-nocookie.com';
+// loaded paused when the run starts, then played on command, so there is no
+// spin-up wait at the moment it fires
+const RICKROLL_SRC = `${YT_ORIGIN}/embed/dQw4w9WgXcQ?enablejsapi=1&autoplay=0&rel=0&playsinline=1`;
 
 export function setupAsteroidsGame() {
     const trigger = document.getElementById('astroTrigger');
@@ -46,6 +48,8 @@ export function setupAsteroidsGame() {
     let stepDebt = 0;
     let rickrolled = false;
     let paused = false;
+    let frameLoaded = false;
+    let pendingPlay = false;
 
     function startGame() {
         if (active) return;
@@ -91,6 +95,7 @@ export function setupAsteroidsGame() {
         lives = 3;
         rickrolled = false;
         closeRickroll();
+        preloadRickroll();   // start buffering now; the run is the loading window
         gameOver = false;
         enteringName = false;
         initials = '';
@@ -291,19 +296,43 @@ export function setupAsteroidsGame() {
         }
     }
 
+    function preloadRickroll() {
+        frameLoaded = false;
+        pendingPlay = false;
+        const iframe = document.createElement('iframe');
+        iframe.title = 'Never Gonna Give You Up';
+        iframe.allow = 'autoplay; encrypted-media';
+        iframe.src = `${RICKROLL_SRC}&origin=${encodeURIComponent(location.origin)}`;
+        iframe.addEventListener('load', () => {
+            frameLoaded = true;
+            if (pendingPlay) playRickroll();
+        });
+        rickrollFrame.replaceChildren(iframe);
+    }
+
+    function playRickroll() {
+        pendingPlay = false;
+        const frame = rickrollFrame.querySelector('iframe');
+        frame?.contentWindow?.postMessage(
+            JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
+            YT_ORIGIN
+        );
+    }
+
     function openRickroll() {
         rickrolled = true;
         paused = true;
         releaseKeys();
-        rickrollFrame.innerHTML =
-            `<iframe src="${RICKROLL_SRC}" title="Never Gonna Give You Up" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
         rickroll.hidden = false;
+        if (frameLoaded) playRickroll(); else pendingPlay = true;
         rickrollClose.focus({ preventScroll: true });
     }
 
     function closeRickroll() {
         rickroll.hidden = true;
-        rickrollFrame.innerHTML = '';  // drop the iframe so the audio actually stops
+        rickrollFrame.replaceChildren();  // drop the iframe so the audio actually stops
+        frameLoaded = false;
+        pendingPlay = false;
         paused = false;
         stepDebt = 0;
         lastFrame = 0;

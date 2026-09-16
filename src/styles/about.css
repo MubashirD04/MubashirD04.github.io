@@ -310,7 +310,11 @@
   border: 2px solid var(--primary-color);
 }
 .rickroll[hidden] {
-  display: none;
+  /* kept in layout rather than display:none so the preloaded player can buffer,
+     but invisible, inert and out of the tab order until it fires */
+  display: flex;
+  visibility: hidden;
+  pointer-events: none;
 }
 .rickroll-title {
   font-family: "Courier New", monospace;
