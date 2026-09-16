@@ -291,6 +291,67 @@
   font-size: 0.9rem;
 }
 
+.game-screen {
+  position: relative;
+  display: flex;
+}
+
+.rickroll {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  background: rgba(5, 7, 12, 0.94);
+  border: 2px solid var(--primary-color);
+}
+.rickroll[hidden] {
+  display: none;
+}
+.rickroll-title {
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: #facc15;
+  text-align: center;
+}
+.rickroll-frame {
+  /* never grow or shrink: flexing it would stretch one axis and break the 16:9 ratio */
+  flex: 0 0 auto;
+  width: min(100%, 560px);
+  aspect-ratio: 16 / 9;
+  align-self: center;
+  background: #000;
+}
+.rickroll-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+.rickroll-close {
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  padding: 8px 18px;
+  color: #05070c;
+  background: var(--primary-color);
+  border: 0;
+  cursor: pointer;
+}
+.rickroll-close:hover,
+.rickroll-close:focus-visible {
+  background: #facc15;
+  outline: none;
+}
+
 #gameCanvas {
   width: 100%;
   aspect-ratio: 384 / 240;
@@ -333,5 +394,17 @@ body.game-active .game-card-inner {
   }
   .game-hint {
     white-space: normal;
+  }
+  .rickroll {
+    gap: 6px;
+    padding: 8px;
+  }
+  .rickroll-title {
+    font-size: 0.6rem;
+  }
+  .rickroll-frame {
+    /* the short game screen runs out of height first here, so drive size from height */
+    width: auto;
+    height: 60%;
   }
 }

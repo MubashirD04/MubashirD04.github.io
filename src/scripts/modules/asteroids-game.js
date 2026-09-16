@@ -8,11 +8,18 @@ const H = 240;
 const STEP_MS = 1000 / 60;
 const MAX_CATCHUP_MS = 250;
 
+const RICKROLL_SCORE = 1000;
+const RICKROLL_SRC =
+    'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0&playsinline=1';
+
 export function setupAsteroidsGame() {
     const trigger = document.getElementById('astroTrigger');
     const exitBtn = document.getElementById('gameExitBtn');
     const canvas = document.getElementById('gameCanvas');
-    if (!trigger || !exitBtn || !canvas) return;
+    const rickroll = document.getElementById('rickroll');
+    const rickrollFrame = document.getElementById('rickrollFrame');
+    const rickrollClose = document.getElementById('rickrollClose');
+    if (!trigger || !exitBtn || !canvas || !rickroll || !rickrollFrame || !rickrollClose) return;
 
     const frontFace = document.querySelector('.card-face-front');
     const backFace = document.querySelector('.card-face-back');
@@ -37,6 +44,8 @@ export function setupAsteroidsGame() {
     let initials = '';
     let lastFrame = 0;
     let stepDebt = 0;
+    let rickrolled = false;
+    let paused = false;
 
     function startGame() {
         if (active) return;
@@ -67,6 +76,7 @@ export function setupAsteroidsGame() {
         if (rafId) cancelAnimationFrame(rafId);
         rafId = null;
         releaseKeys();
+        closeRickroll();   // leaving with the video open would otherwise keep it playing
         backFace.inert = true;
         frontFace.inert = false;
     }
@@ -79,6 +89,8 @@ export function setupAsteroidsGame() {
     function resetState() {
         score = 0;
         lives = 3;
+        rickrolled = false;
+        closeRickroll();
         gameOver = false;
         enteringName = false;
         initials = '';
@@ -126,6 +138,10 @@ export function setupAsteroidsGame() {
         // the chatbot shares the page, so never steal keys aimed at a text field
         if (isTypingTarget(e.target)) return;
         if (e.key === ' ' || e.key === 'Backspace' || e.key.startsWith('Arrow')) e.preventDefault();
+        if (paused) {
+            if (e.key === 'Escape') closeRickroll();
+            return;
+        }
         if (e.key === 'Escape') { exitGame(); return; }
 
         if (enteringName) {
@@ -260,6 +276,8 @@ export function setupAsteroidsGame() {
         if (!gameOver && asteroids.length === 0) {
             spawnWave(Math.min(4 + Math.floor(score / 500), 8));
         }
+
+        if (!rickrolled && !gameOver && score >= RICKROLL_SCORE) openRickroll();
     }
 
     function burst(x, y, count) {
@@ -271,6 +289,24 @@ export function setupAsteroidsGame() {
                 life: 20 + Math.random() * 15,
             });
         }
+    }
+
+    function openRickroll() {
+        rickrolled = true;
+        paused = true;
+        releaseKeys();
+        rickrollFrame.innerHTML =
+            `<iframe src="${RICKROLL_SRC}" title="Never Gonna Give You Up" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+        rickroll.hidden = false;
+        rickrollClose.focus({ preventScroll: true });
+    }
+
+    function closeRickroll() {
+        rickroll.hidden = true;
+        rickrollFrame.innerHTML = '';  // drop the iframe so the audio actually stops
+        paused = false;
+        stepDebt = 0;
+        lastFrame = 0;
     }
 
     function endGame() {
@@ -401,7 +437,7 @@ export function setupAsteroidsGame() {
         // backgrounded tab from fast-forwarding a huge batch of steps when it comes back
         stepDebt += Math.min(now - lastFrame, MAX_CATCHUP_MS);
         lastFrame = now;
-        while (stepDebt >= STEP_MS) {
+        while (!paused && stepDebt >= STEP_MS) {
             update();
             stepDebt -= STEP_MS;
         }
@@ -462,6 +498,7 @@ export function setupAsteroidsGame() {
         }
     });
     exitBtn.addEventListener('click', exitGame);
+    rickrollClose.addEventListener('click', closeRickroll);
 
     // ClientRouter swaps the DOM without unloading the page, so leaving mid-game would
     // otherwise strand the loop and its key listeners on a detached canvas. `once` keeps

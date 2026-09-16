@@ -109,7 +109,18 @@ import Contact from "../components/Contact.astro";
         <span id="gameScore">SCORE 0000</span>
         <span id="gameLives">♥ ♥ ♥</span>
       </div>
-      <canvas id="gameCanvas" width="384" height="240"></canvas>
+      <div class="game-screen">
+        <canvas id="gameCanvas" width="384" height="240"></canvas>
+
+        <div class="rickroll" id="rickroll" hidden>
+          <p class="rickroll-title">⚠ 1000 POINTS &middot; YOU'VE BEEN RICKROLLED</p>
+          <div class="rickroll-frame" id="rickrollFrame"></div>
+          <button type="button" class="rickroll-close" id="rickrollClose">
+            Resume Game
+          </button>
+        </div>
+      </div>
+
       <p class="game-hint">
         WASD / ARROWS to move &middot; SPACE to fire &middot; ESC to exit
       </p>
