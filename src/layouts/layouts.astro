@@ -9,6 +9,27 @@ import { ClientRouter } from "astro:transitions";
 const { title, description } = Astro.props;
 const rawPath = Astro.url.pathname;
 const path = rawPath.length > 1 ? rawPath.replace(/\/$/, "") : rawPath;
+
+const siteUrl = Astro.site?.href ?? Astro.url.origin + "/";
+const person = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Mubashir Dawood",
+  url: siteUrl,
+  jobTitle: "Full Stack Developer & Software Engineer",
+  image: new URL("/assets/favicon.png", Astro.url).href,
+  sameAs: [
+    "https://github.com/MubashirD04",
+    "https://www.linkedin.com/in/mubashir-dawood-2b2a79206/",
+    "https://x.com/DevByMubs",
+  ],
+};
+const website = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Mubashir Dawood",
+  url: siteUrl,
+};
 ---
 
 <!doctype html>
@@ -29,6 +50,9 @@ const path = rawPath.length > 1 ? rawPath.replace(/\/$/, "") : rawPath;
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={new URL("/assets/favicon.png", Astro.url).href} />
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(person)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(website)} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
