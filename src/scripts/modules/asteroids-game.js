@@ -5,6 +5,9 @@ const NAME_LENGTH = 3;
 const W = 384;
 const H = 240;
 
+const STEP_MS = 1000 / 60;
+const MAX_CATCHUP_MS = 250;
+
 export function setupAsteroidsGame() {
     const trigger = document.getElementById('astroTrigger');
     const exitBtn = document.getElementById('gameExitBtn');
@@ -32,6 +35,8 @@ export function setupAsteroidsGame() {
     let fireCooldown = 0;
     let enteringName = false;
     let initials = '';
+    let lastFrame = 0;
+    let stepDebt = 0;
 
     function startGame() {
         if (active) return;
@@ -47,10 +52,12 @@ export function setupAsteroidsGame() {
         window.addEventListener('keydown', onKeyDown);
         window.addEventListener('keyup', onKeyUp);
         window.addEventListener('blur', releaseKeys);
-        loop();
+        lastFrame = 0;
+        stepDebt = 0;
+        rafId = requestAnimationFrame(loop);
     }
 
-    function exitGame() {
+    function teardown() {
         active = false;
         document.body.classList.remove('game-active');
         document.getElementById('gameArena').setAttribute('aria-hidden', 'true');
@@ -62,6 +69,10 @@ export function setupAsteroidsGame() {
         releaseKeys();
         backFace.inert = true;
         frontFace.inert = false;
+    }
+
+    function exitGame() {
+        teardown();
         trigger.focus();
     }
 
@@ -107,7 +118,13 @@ export function setupAsteroidsGame() {
         };
     }
 
+    function isTypingTarget(el) {
+        return !!el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable);
+    }
+
     function onKeyDown(e) {
+        // the chatbot shares the page, so never steal keys aimed at a text field
+        if (isTypingTarget(e.target)) return;
         if (e.key === ' ' || e.key === 'Backspace' || e.key.startsWith('Arrow')) e.preventDefault();
         if (e.key === 'Escape') { exitGame(); return; }
 
@@ -128,6 +145,7 @@ export function setupAsteroidsGame() {
         keys[normalizeKey(e.key)] = true;
     }
     function onKeyUp(e) {
+        if (isTypingTarget(e.target)) return;
         keys[normalizeKey(e.key)] = false;
     }
     function releaseKeys() {
@@ -149,6 +167,10 @@ export function setupAsteroidsGame() {
     }
 
     function update() {
+        // a key held while focus moves into a text field never delivers its keyup here,
+        // so drop the held keys rather than letting the ship fly on by itself
+        if (isTypingTarget(document.activeElement)) releaseKeys();
+
         if (fireCooldown > 0) fireCooldown--;
         if (invulnerable > 0) invulnerable--;
 
@@ -193,8 +215,9 @@ export function setupAsteroidsGame() {
         particles.forEach((p) => { p.x += p.vx; p.y += p.vy; p.life--; });
         particles = particles.filter((p) => p.life > 0);
 
-        // bullet vs asteroid
-        outer: for (let ai = asteroids.length - 1; ai >= 0; ai--) {
+        // bullet vs asteroid — skipped once dead, so in-flight shots can't inflate the
+        // final score after qualifies() has already judged it
+        outer: for (let ai = asteroids.length - 1; !gameOver && ai >= 0; ai--) {
             const a = asteroids[ai];
             for (let bi = bullets.length - 1; bi >= 0; bi--) {
                 const b = bullets[bi];
@@ -271,7 +294,8 @@ export function setupAsteroidsGame() {
         ctx.strokeStyle = '#4ade80';
         ctx.fillStyle = '#4ade80';
         particles.forEach((p) => {
-            ctx.globalAlpha = Math.max(p.life / 25, 0);
+            // canvas ignores globalAlpha outside 0-1, which would leak the previous value
+            ctx.globalAlpha = Math.min(Math.max(p.life / 25, 0), 1);
             ctx.fillRect(Math.round(p.x), Math.round(p.y), 2, 2);
         });
         ctx.globalAlpha = 1;
@@ -370,16 +394,27 @@ export function setupAsteroidsGame() {
         }
     }
 
-    function loop() {
-        update();
+    function loop(now) {
+        if (!active) return;
+        if (!lastFrame) lastFrame = now;
+        // step at a fixed 60Hz so the tuned speeds hold on 120Hz+ displays; the cap keeps a
+        // backgrounded tab from fast-forwarding a huge batch of steps when it comes back
+        stepDebt += Math.min(now - lastFrame, MAX_CATCHUP_MS);
+        lastFrame = now;
+        while (stepDebt >= STEP_MS) {
+            update();
+            stepDebt -= STEP_MS;
+        }
         draw();
-        if (active) rafId = requestAnimationFrame(loop);
+        rafId = requestAnimationFrame(loop);
     }
 
     function loadScores() {
         try {
             const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
-            return Array.isArray(stored) ? stored : [];
+            if (!Array.isArray(stored)) return [];
+            // storage is user-writable: drop anything that isn't a usable entry
+            return stored.filter((s) => s && typeof s === 'object' && Number.isFinite(s.score));
         } catch {
             return [];
         }
@@ -427,4 +462,9 @@ export function setupAsteroidsGame() {
         }
     });
     exitBtn.addEventListener('click', exitGame);
+
+    // ClientRouter swaps the DOM without unloading the page, so leaving mid-game would
+    // otherwise strand the loop and its key listeners on a detached canvas. `once` keeps
+    // this from stacking, since setup re-runs on every astro:page-load.
+    document.addEventListener('astro:before-swap', teardown, { once: true });
 }
