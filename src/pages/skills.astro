@@ -110,5 +110,81 @@ import { Image } from "astro:assets";
         </div>
       </div>
     </div>
+
+    <div class="claude-skills">
+      <h2 class="claude-skills-title">Claude Skills I've Built</h2>
+      <p class="claude-skills-subtitle">
+        Custom skills I've directed Claude to build for my own workflow
+      </p>
+      <div class="claude-skills-grid">
+        <div class="claude-skills-row">
+          <div class="card claude-skill-card claude-skill-wide">
+            <span class="claude-skill-eyebrow">Browser Tooling</span>
+            <h3>Tab Bridge</h3>
+            <p class="claude-skill-body">
+              Lets Claude read a Firefox tab's HTML, console logs, network
+              requests, and screenshots — for any tab I explicitly allow. Built
+              because I was constantly pasting console errors and HTML snippets
+              in by hand while debugging.
+            </p>
+            <a
+              href="https://github.com/MubashirD04/Tab-bridge"
+              class="claude-skill-link"
+              target="_blank"
+              >Try Skill <span aria-hidden="true">&gt;</span></a
+            >
+          </div>
+          <div class="card claude-skill-card claude-skill-narrow">
+            <span class="claude-skill-eyebrow">Planning</span>
+            <h3>Master Builder</h3>
+            <p class="claude-skill-body">
+              Turns a rough app idea into a full technical blueprint —
+              architecture, data model, API design, security, cost, deployment —
+              before any code is written. Built to stop me skipping the
+              decisions that bite later.
+            </p>
+            <a
+              href="/downloads/skills/master-builder.skill"
+              class="claude-skill-link"
+              download
+              >Try Skill <span aria-hidden="true">&gt;</span></a
+            >
+          </div>
+        </div>
+        <div class="claude-skills-row">
+          <div class="card claude-skill-card claude-skill-narrow">
+            <span class="claude-skill-eyebrow">SEO</span>
+            <h3>SEO Best Practices</h3>
+            <p class="claude-skill-body">
+              A checklist-driven skill covering on-page, technical, content, and
+              off-page SEO. Built so Claude diagnoses issues by actually
+              inspecting the page, not guessing from memory.
+            </p>
+            <a
+              href="/downloads/skills/seo-best-practices.skill"
+              class="claude-skill-link"
+              download
+              >Try Skill <span aria-hidden="true">&gt;</span></a
+            >
+          </div>
+          <div class="card claude-skill-card claude-skill-wide">
+            <span class="claude-skill-eyebrow">Git Workflow</span>
+            <h3>Git Hygiene</h3>
+            <p class="claude-skill-body">
+              A checklist Claude applies automatically when committing,
+              branching, or opening a PR — atomic commits, clear messages,
+              short-lived branches, no leaked secrets. Built for consistent
+              history without repeating myself every session.
+            </p>
+            <a
+              href="/downloads/skills/git-hygiene.skill"
+              class="claude-skill-link"
+              download
+              >Try Skill <span aria-hidden="true">&gt;</span></a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 </Layouts>
