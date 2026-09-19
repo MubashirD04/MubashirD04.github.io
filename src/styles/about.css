@@ -1,5 +1,18 @@
 /* About Page Specific Styles */
 
+/* Unlike the other pages' titles this one is a direct child of <main>, with no
+   section padding to keep it clear of the fixed nav, so it reserves its own. */
+.about-title {
+    margin-top: 0;
+    padding-top: 110px;
+}
+
+@media (max-width: 768px) {
+    .about-title {
+        padding-top: 95px;
+    }
+}
+
 .about-card {
     font-size: 1.1rem;
 }
