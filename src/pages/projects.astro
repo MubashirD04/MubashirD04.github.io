@@ -2,7 +2,7 @@
 import Layouts from "../layouts/layouts.astro";
 
 const featured = {
-    name: "SA Simple Books",
+    name: "Simple Books",
     summary: "An AI-native accounting web app for South African accountants, from bank statement to VAT201.",
     overview: [
         "Lets an accountant run real client books: upload a bank statement and each transaction is categorised by the client's own rules, then built-in SA rules, then an AI fallback.",
@@ -93,9 +93,12 @@ const pad = (n: number) => String(n).padStart(2, "0");
                     <h2>{featured.name}</h2>
                     <p class="project-feature-summary">{featured.summary}</p>
                     {featured.overview.map((para) => <p>{para}</p>)}
-                    <a class="project-cta" href={featured.link.href} target="_blank" rel="noopener">
-                        {featured.link.label} <span aria-hidden="true">↗</span>
-                    </a>
+                    <div class="project-cta-row">
+                        <a class="project-cta" href={featured.link.href} target="_blank" rel="noopener">
+                            {featured.link.label} <span aria-hidden="true">↗</span>
+                        </a>
+                        <span class="project-cta-note">Demo</span>
+                    </div>
                 </div>
                 <aside class="project-feature-side">
                     <h3>Highlights</h3>

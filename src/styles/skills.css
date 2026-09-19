@@ -42,10 +42,10 @@
     color: var(--primary-color);
 }
 
-.skills-container {
+.skill-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px 8px;
+    gap: 10px;
     margin-top: 16px;
 }
 
@@ -61,7 +61,6 @@
     white-space: nowrap;
 
     transition: background-color 0.2s ease, transform 0.2s ease;
-    margin-bottom: 4px;
 }
 
 .skill-tag:hover {
@@ -155,7 +154,43 @@
 }
 
 @media (max-width: 700px) {
+    .claude-skills-grid {
+        gap: 16px;
+    }
+
     .claude-skills-row {
-        flex-direction: column;
+        gap: 16px;
+    }
+
+    /* keep two cards per row on mobile, at equal width */
+    .claude-skill-card {
+        padding: 18px 14px;
+        gap: 8px;
+        min-width: 0;
+        border-radius: 14px;
+    }
+
+    .claude-skill-wide,
+    .claude-skill-narrow {
+        flex: 1 1 0;
+    }
+
+    .claude-skill-card h3 {
+        font-size: 1.05rem;
+    }
+
+    .claude-skill-body {
+        font-size: 0.8rem;
+        line-height: 1.45;
+        text-align: left;
+        hyphens: auto;
+    }
+
+    .claude-skill-eyebrow {
+        font-size: 0.65rem;
+    }
+
+    .claude-skill-link {
+        font-size: 0.82rem;
     }
 }

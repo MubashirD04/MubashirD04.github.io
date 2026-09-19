@@ -121,6 +121,29 @@
     text-decoration: none;
 }
 
+.project-cta-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+}
+
+.project-cta-row .project-cta {
+    margin-top: 0;
+}
+
+.project-cta-note {
+    padding: 3px 10px;
+    border: 1px solid var(--glass-border);
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-light);
+}
+
 .project-cta:hover,
 .project-cta:focus-visible {
     text-decoration: underline;
