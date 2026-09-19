@@ -50,6 +50,7 @@ export function setupAsteroidsGame() {
     let paused = false;
     let frameLoaded = false;
     let pendingPlay = false;
+    let priming = false;
 
     function startGame() {
         if (active) return;
@@ -65,6 +66,7 @@ export function setupAsteroidsGame() {
         window.addEventListener('keydown', onKeyDown);
         window.addEventListener('keyup', onKeyUp);
         window.addEventListener('blur', releaseKeys);
+        window.addEventListener('message', onPlayerMessage);
         lastFrame = 0;
         stepDebt = 0;
         rafId = requestAnimationFrame(loop);
@@ -77,6 +79,7 @@ export function setupAsteroidsGame() {
         window.removeEventListener('keydown', onKeyDown);
         window.removeEventListener('keyup', onKeyUp);
         window.removeEventListener('blur', releaseKeys);
+        window.removeEventListener('message', onPlayerMessage);
         if (rafId) cancelAnimationFrame(rafId);
         rafId = null;
         releaseKeys();
@@ -296,27 +299,53 @@ export function setupAsteroidsGame() {
         }
     }
 
+    // A paused embed only fetches the player shell, never the video, so the stream
+    // would still start from cold at 1000. Instead play it muted until the player
+    // reports PLAYING (the opening is then buffered), pause, and rewind to 0:00.
     function preloadRickroll() {
         frameLoaded = false;
         pendingPlay = false;
+        priming = true;
         const iframe = document.createElement('iframe');
         iframe.title = 'Never Gonna Give You Up';
         iframe.allow = 'autoplay; encrypted-media';
         iframe.src = `${RICKROLL_SRC}&origin=${encodeURIComponent(location.origin)}`;
         iframe.addEventListener('load', () => {
             frameLoaded = true;
-            if (pendingPlay) playRickroll();
+            // subscribes to state events, which the player only sends after this handshake
+            iframe.contentWindow?.postMessage(JSON.stringify({ event: 'listening', channel: 'widget' }), YT_ORIGIN);
+            if (pendingPlay) return playRickroll();
+            ytCommand('mute');
+            ytCommand('playVideo');
         });
         rickrollFrame.replaceChildren(iframe);
     }
 
-    function playRickroll() {
-        pendingPlay = false;
-        const frame = rickrollFrame.querySelector('iframe');
-        frame?.contentWindow?.postMessage(
-            JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
+    function ytCommand(func, args = []) {
+        rickrollFrame.querySelector('iframe')?.contentWindow?.postMessage(
+            JSON.stringify({ event: 'command', func, args }),
             YT_ORIGIN
         );
+    }
+
+    function onPlayerMessage(e) {
+        if (e.origin !== YT_ORIGIN || !priming) return;
+        if (e.source !== rickrollFrame.querySelector('iframe')?.contentWindow) return;
+        let data;
+        try { data = JSON.parse(e.data); } catch { return; }
+        const state = data.event === 'onStateChange' ? data.info : data.info?.playerState;
+        if (state !== 1) return;  // 1 = PLAYING
+        priming = false;
+        ytCommand('pauseVideo');
+        ytCommand('seekTo', [0, true]);
+    }
+
+    function playRickroll() {
+        pendingPlay = false;
+        priming = false;
+        ytCommand('seekTo', [0, true]);
+        ytCommand('unMute');
+        ytCommand('playVideo');
     }
 
     function openRickroll() {
@@ -333,6 +362,7 @@ export function setupAsteroidsGame() {
         rickrollFrame.replaceChildren();  // drop the iframe so the audio actually stops
         frameLoaded = false;
         pendingPlay = false;
+        priming = false;
         paused = false;
         stepDebt = 0;
         lastFrame = 0;
