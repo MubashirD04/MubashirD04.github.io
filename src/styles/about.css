@@ -359,11 +359,29 @@
 #gameCanvas {
   width: 100%;
   aspect-ratio: 384 / 240;
+  /* a finger on the board aims the ship, so the browser must not read the same
+     drag as a page scroll or a double-tap zoom */
+  touch-action: none;
   background: #05070c;
   border: 2px solid var(--primary-color);
   box-shadow: var(--glass-shadow);
   image-rendering: pixelated;
   image-rendering: crisp-edges;
+}
+
+.game-initials-input {
+  /* invisible, but still focusable, which is what opens the phone keyboard.
+     display:none or visibility:hidden would make focus() a no-op. */
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+  font-size: 16px;   /* anything smaller makes iOS zoom the page on focus */
 }
 
 .game-hint {
@@ -373,6 +391,19 @@
   color: var(--text-muted);
   text-align: center;
   white-space: nowrap;
+}
+
+.game-hint-touch {
+  display: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .game-hint-keys {
+    display: none;
+  }
+  .game-hint-touch {
+    display: inline;
+  }
 }
 
 /* Active state, toggled on <body> by the game module */

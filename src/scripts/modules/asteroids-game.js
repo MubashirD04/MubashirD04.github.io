@@ -9,6 +9,9 @@ const STEP_MS = 1000 / 60;
 const MAX_CATCHUP_MS = 250;
 
 const RICKROLL_SCORE = 1000;
+// a tap is a shot; holding past this also lights the thrusters, so a quick
+// tap never nudges the ship out of position
+const THRUST_HOLD_MS = 260;
 const YT_ORIGIN = 'https://www.youtube-nocookie.com';
 // loaded paused when the run starts, then played on command, so there is no
 // spin-up wait at the moment it fires
@@ -21,7 +24,8 @@ export function setupAsteroidsGame() {
     const rickroll = document.getElementById('rickroll');
     const rickrollFrame = document.getElementById('rickrollFrame');
     const rickrollClose = document.getElementById('rickrollClose');
-    if (!trigger || !exitBtn || !canvas || !rickroll || !rickrollFrame || !rickrollClose) return;
+    const initialsInput = document.getElementById('gameInitials');
+    if (!trigger || !exitBtn || !canvas || !rickroll || !rickrollFrame || !rickrollClose || !initialsInput) return;
 
     const frontFace = document.querySelector('.card-face-front');
     const backFace = document.querySelector('.card-face-back');
@@ -51,6 +55,9 @@ export function setupAsteroidsGame() {
     let frameLoaded = false;
     let pendingPlay = false;
     let priming = false;
+    let touch = null;        // { x, y, since, id } while a finger is on the board
+    let touchMode = false;   // set on the first touch, and switches the on-canvas prompts
+    let thrusting = false;
 
     function startGame() {
         if (active) return;
@@ -67,6 +74,12 @@ export function setupAsteroidsGame() {
         window.addEventListener('keyup', onKeyUp);
         window.addEventListener('blur', releaseKeys);
         window.addEventListener('message', onPlayerMessage);
+        canvas.addEventListener('pointerdown', onPointerDown);
+        canvas.addEventListener('pointermove', onPointerMove);
+        canvas.addEventListener('pointerup', onPointerUp);
+        canvas.addEventListener('pointercancel', onPointerUp);
+        initialsInput.addEventListener('input', onInitialsInput);
+        initialsInput.addEventListener('keydown', onInitialsKeyDown);
         lastFrame = 0;
         stepDebt = 0;
         rafId = requestAnimationFrame(loop);
@@ -80,6 +93,13 @@ export function setupAsteroidsGame() {
         window.removeEventListener('keyup', onKeyUp);
         window.removeEventListener('blur', releaseKeys);
         window.removeEventListener('message', onPlayerMessage);
+        canvas.removeEventListener('pointerdown', onPointerDown);
+        canvas.removeEventListener('pointermove', onPointerMove);
+        canvas.removeEventListener('pointerup', onPointerUp);
+        canvas.removeEventListener('pointercancel', onPointerUp);
+        initialsInput.removeEventListener('input', onInitialsInput);
+        initialsInput.removeEventListener('keydown', onInitialsKeyDown);
+        closeInitialsInput();
         if (rafId) cancelAnimationFrame(rafId);
         rafId = null;
         releaseKeys();
@@ -103,6 +123,8 @@ export function setupAsteroidsGame() {
         enteringName = false;
         initials = '';
         invulnerable = 120;
+        touch = null;
+        thrusting = false;
         bullets = [];
         particles = [];
         ship = { x: W / 2, y: H / 2, angle: -Math.PI / 2, vx: 0, vy: 0, radius: 6 };
@@ -158,9 +180,7 @@ export function setupAsteroidsGame() {
             } else if (e.key === 'Backspace') {
                 initials = initials.slice(0, -1);
             } else if (e.key === 'Enter' && initials.length === NAME_LENGTH) {
-                enteringName = false;
-                saveScore(score, initials);
-                renderLeaderboard();
+                commitName();
             }
             return;
         }
@@ -174,6 +194,8 @@ export function setupAsteroidsGame() {
     }
     function releaseKeys() {
         keys = {};
+        touch = null;
+        thrusting = false;
     }
     function normalizeKey(key) {
         const map = {
@@ -183,6 +205,79 @@ export function setupAsteroidsGame() {
             ' ': 'fire',
         };
         return map[key] || key;
+    }
+
+    function canvasPoint(e) {
+        const rect = canvas.getBoundingClientRect();
+        return {
+            x: ((e.clientX - rect.left) / rect.width) * W,
+            y: ((e.clientY - rect.top) / rect.height) * H,
+        };
+    }
+
+    // Touch only: on a mouse, a stray click on the board would yank the ship
+    // away from whatever the player is steering with the keyboard.
+    function onPointerDown(e) {
+        if (e.pointerType === 'mouse') return;
+        touchMode = true;
+        e.preventDefault();
+
+        if (paused) { closeRickroll(); return; }
+
+        if (enteringName) {
+            if (initials.length === NAME_LENGTH) commitName();
+            else openInitialsInput();
+            return;
+        }
+        if (gameOver) { resetState(); return; }
+
+        const p = canvasPoint(e);
+        touch = { x: p.x, y: p.y, since: performance.now(), id: e.pointerId };
+        // keeps the aim tracking a finger that slides off the board; not worth
+        // failing the whole gesture over if the browser refuses it
+        try { canvas.setPointerCapture(e.pointerId); } catch { /* ignore */ }
+    }
+
+    function onPointerMove(e) {
+        if (!touch || e.pointerId !== touch.id) return;
+        e.preventDefault();
+        const p = canvasPoint(e);
+        touch.x = p.x;
+        touch.y = p.y;
+    }
+
+    function onPointerUp(e) {
+        if (!touch || e.pointerId !== touch.id) return;
+        touch = null;
+        thrusting = false;
+    }
+
+    function openInitialsInput() {
+        initialsInput.value = initials;
+        initialsInput.focus({ preventScroll: true });
+    }
+
+    function onInitialsInput() {
+        initials = initialsInput.value.replace(/[^a-zA-Z]/g, '').toUpperCase().slice(0, NAME_LENGTH);
+        initialsInput.value = initials;
+    }
+
+    function onInitialsKeyDown(e) {
+        if (e.key !== 'Enter') return;
+        e.preventDefault();
+        if (initials.length === NAME_LENGTH) commitName();
+    }
+
+    function commitName() {
+        enteringName = false;
+        closeInitialsInput();
+        saveScore(score, initials);
+        renderLeaderboard();
+    }
+
+    function closeInitialsInput() {
+        initialsInput.value = '';
+        initialsInput.blur();
     }
 
     function wrap(obj) {
@@ -199,9 +294,18 @@ export function setupAsteroidsGame() {
         if (invulnerable > 0) invulnerable--;
 
         if (!gameOver) {
+            // a finger on the board points the ship straight at it, so any
+            // direction is one tap away
+            if (touch) {
+                const dx = touch.x - ship.x;
+                const dy = touch.y - ship.y;
+                if (Math.hypot(dx, dy) > 2) ship.angle = Math.atan2(dy, dx);
+            }
             if (keys.left) ship.angle -= 0.06;
             if (keys.right) ship.angle += 0.06;
-            if (keys.up) {
+
+            thrusting = !!keys.up || (!!touch && performance.now() - touch.since >= THRUST_HOLD_MS);
+            if (thrusting) {
                 ship.vx += Math.cos(ship.angle) * 0.08;
                 ship.vy += Math.sin(ship.angle) * 0.08;
             }
@@ -217,7 +321,7 @@ export function setupAsteroidsGame() {
             ship.y += ship.vy;
             wrap(ship);
 
-            if (keys.fire && fireCooldown <= 0) {
+            if ((keys.fire || touch) && fireCooldown <= 0) {
                 bullets.push({
                     x: ship.x + Math.cos(ship.angle) * 8,
                     y: ship.y + Math.sin(ship.angle) * 8,
@@ -374,6 +478,7 @@ export function setupAsteroidsGame() {
         if (qualifies(score)) {
             enteringName = true;
             initials = '';
+            if (touchMode) openInitialsInput();
         }
     }
 
@@ -430,7 +535,7 @@ export function setupAsteroidsGame() {
             ctx.closePath();
             ctx.fill();
             ctx.stroke();
-            if (keys.up) {
+            if (thrusting) {
                 ctx.beginPath();
                 ctx.moveTo(-4, 0);
                 ctx.lineTo(-10, 3);
@@ -474,16 +579,21 @@ export function setupAsteroidsGame() {
 
                 ctx.font = '8px "Courier New", monospace';
                 ctx.fillStyle = '#9bb1c2';
+                const done = initials.length === NAME_LENGTH;
                 ctx.fillText(
-                    initials.length === NAME_LENGTH
-                        ? 'ENTER TO SAVE · BACKSPACE TO EDIT'
-                        : 'TYPE A-Z',
+                    touchMode
+                        ? (done ? 'TAP THE BOARD TO SAVE' : 'TAP THE BOARD TO TYPE')
+                        : (done ? 'ENTER TO SAVE · BACKSPACE TO EDIT' : 'TYPE A-Z'),
                     W / 2,
                     162
                 );
             } else {
                 ctx.font = '10px "Courier New", monospace';
-                ctx.fillText('PRESS R TO RESTART · ESC TO EXIT', W / 2, 132);
+                ctx.fillText(
+                    touchMode ? 'TAP TO RESTART' : 'PRESS R TO RESTART · ESC TO EXIT',
+                    W / 2,
+                    132
+                );
             }
             ctx.textAlign = 'start';
         }
