@@ -1,22 +1,19 @@
 export function setupAccordion() {
-    const projects = document.querySelectorAll('.project-card');
-    projects.forEach((card, index) => {
-        const header = card.querySelector('.accordion-header');
-        if (header) {
-            header.addEventListener('click', () => {
-                const isActive = card.classList.contains('active');
-                // Close all
-                projects.forEach(p => p.classList.remove('active'));
-                // Open if it wasn't active
-                if (!isActive) {
-                    card.classList.add('active');
-                }
+    const rows = document.querySelectorAll('.project-row');
+    rows.forEach((row) => {
+        const toggle = row.querySelector('.project-row-toggle');
+        if (!toggle) return;
+        toggle.addEventListener('click', () => {
+            const opening = !row.classList.contains('open');
+            // Only one row open at a time
+            rows.forEach((r) => {
+                r.classList.remove('open');
+                r.querySelector('.project-row-toggle')?.setAttribute('aria-expanded', 'false');
             });
-        }
-        
-        // Open first by default
-        if (index === 0) {
-            card.classList.add('active');
-        }
+            if (opening) {
+                row.classList.add('open');
+                toggle.setAttribute('aria-expanded', 'true');
+            }
+        });
     });
 }
