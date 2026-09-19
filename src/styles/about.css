@@ -393,8 +393,15 @@ body.game-active .game-card-inner {
   .arcade-stage {
     flex-direction: column;
   }
+  /* stacked, width: 0 no longer collapses the closed arena, so it would
+     leave its full height as dead space under the card */
+  .game-arena {
+    height: 0;
+    transition: height 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+  }
   body.game-active .game-arena {
     width: 100%;
+    height: auto;
   }
   .game-hint {
     white-space: normal;
