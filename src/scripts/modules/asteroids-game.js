@@ -9,9 +9,6 @@ const STEP_MS = 1000 / 60;
 const MAX_CATCHUP_MS = 250;
 
 const RICKROLL_SCORE = 1000;
-// a tap is a shot; holding past this also lights the thrusters, so a quick
-// tap never nudges the ship out of position
-const THRUST_HOLD_MS = 260;
 const YT_ORIGIN = 'https://www.youtube-nocookie.com';
 // loaded paused when the run starts, then played on command, so there is no
 // spin-up wait at the moment it fires
@@ -55,7 +52,7 @@ export function setupAsteroidsGame() {
     let frameLoaded = false;
     let pendingPlay = false;
     let priming = false;
-    let touch = null;        // { x, y, since, id } while a finger is on the board
+    let touch = null;        // { x, y, id } while a finger is on the board
     let touchMode = false;   // set on the first touch, and switches the on-canvas prompts
     let thrusting = false;
 
@@ -232,7 +229,7 @@ export function setupAsteroidsGame() {
         if (gameOver) { resetState(); return; }
 
         const p = canvasPoint(e);
-        touch = { x: p.x, y: p.y, since: performance.now(), id: e.pointerId };
+        touch = { x: p.x, y: p.y, id: e.pointerId };
         // keeps the aim tracking a finger that slides off the board; not worth
         // failing the whole gesture over if the browser refuses it
         try { canvas.setPointerCapture(e.pointerId); } catch { /* ignore */ }
@@ -304,7 +301,9 @@ export function setupAsteroidsGame() {
             if (keys.left) ship.angle -= 0.06;
             if (keys.right) ship.angle += 0.06;
 
-            thrusting = !!keys.up || (!!touch && performance.now() - touch.since >= THRUST_HOLD_MS);
+            // touch aims and fires only: the ship holds its position, since
+            // flying off in the direction you are shooting fights the aiming
+            thrusting = !!keys.up;
             if (thrusting) {
                 ship.vx += Math.cos(ship.angle) * 0.08;
                 ship.vy += Math.sin(ship.angle) * 0.08;
