@@ -5,8 +5,13 @@ import "../styles/about.css";
 import "../styles/skills.css";
 import "../styles/projects.css";
 import { ClientRouter } from "astro:transitions";
+import fs from "node:fs";
 
 const { title, description } = Astro.props;
+
+// Drop the PDF at this path and "Hire me" opens it; until then it starts an email.
+const CV_PATH = "/downloads/Mubashir-Dawood-CV.pdf";
+const hasCv = fs.existsSync(`public${CV_PATH}`);
 const rawPath = Astro.url.pathname;
 const path = rawPath.length > 1 ? rawPath.replace(/\/$/, "") : rawPath;
 
@@ -285,6 +290,18 @@ const website = {
             </li>
           </ul>
         </div>
+
+        {
+          hasCv ? (
+            <a href={CV_PATH} class="hire-btn" target="_blank" rel="noopener" data-cv>
+              Hire me
+            </a>
+          ) : (
+            <a href="mailto:mubashir.dawood4@gmail.com?subject=Hiring%20enquiry" class="hire-btn">
+              Hire me
+            </a>
+          )
+        }
       </nav>
 
       <main id="main-content">
@@ -297,6 +314,24 @@ const website = {
           <p>Built with Passion & Precision</p>
         </div>
       </footer>
+
+      {
+        hasCv && (
+          <dialog class="cv-dialog" id="cvDialog" aria-label="Mubashir Dawood's CV">
+            <div class="cv-dialog-bar">
+              <span class="cv-dialog-title">CV · Mubashir Dawood</span>
+              <div class="cv-dialog-actions">
+                <a href={CV_PATH} target="_blank" rel="noopener">Open in new tab ↗</a>
+                <a href={CV_PATH} download>Download</a>
+                <button type="button" class="cv-dialog-close" data-cv-close aria-label="Close CV">
+                  &times;
+                </button>
+              </div>
+            </div>
+            <iframe class="cv-dialog-frame" title="Mubashir Dawood's CV" data-src={`${CV_PATH}#navpanes=0&view=FitH`} />
+          </dialog>
+        )
+      }
 
       <!-- Chatbot Widget -->
       <div id="chatbot-container">

@@ -1,5 +1,4 @@
 ---
-import fs from "node:fs";
 import Layouts from "../layouts/layouts.astro";
 import Contact from "../components/Contact.astro";
 
@@ -32,9 +31,6 @@ const timeline = [
   },
 ];
 
-// Drop the PDF at this path and the Download CV button appears.
-const CV_PATH = "/downloads/Mubashir-Dawood-CV.pdf";
-const hasCv = fs.existsSync(`public${CV_PATH}`);
 ---
 
 <Layouts
@@ -198,6 +194,11 @@ const hasCv = fs.existsSync(`public${CV_PATH}`);
         debugging systems or training, you'll likely find me absorbed in a
         strategy game or lost in a book.
       </p>
+      <p>
+        I'm on the hunt for a graduate or junior role that has an
+        engineering-focused team where I can dig deep into backend services,
+        systems programming, or data-driven application development.
+      </p>
     </div>
   </section>
 
@@ -215,35 +216,6 @@ const hasCv = fs.existsSync(`public${CV_PATH}`);
         ))
       }
     </ol>
-  </section>
-
-  <section id="hire">
-    <div class="card hire-card">
-      <p class="hire-eyebrow">Open to work</p>
-      <h2>Hire me</h2>
-      <p>
-        I'm looking for a graduate or junior role on an engineering-focused team,
-        working on backend services, systems programming or data-driven
-        applications.
-      </p>
-      <div class="hire-actions">
-        {
-          hasCv ? (
-            <a href={CV_PATH} class="hero-btn hero-btn-primary" download>
-              Download CV
-            </a>
-          ) : (
-            <a
-              href="mailto:mubashir.dawood4@gmail.com?subject=CV%20request"
-              class="hero-btn hero-btn-primary"
-            >
-              Email me for my CV
-            </a>
-          )
-        }
-        <a href="#contact" class="hero-btn hero-btn-secondary">Get in touch</a>
-      </div>
-    </div>
   </section>
 
   <Contact />
