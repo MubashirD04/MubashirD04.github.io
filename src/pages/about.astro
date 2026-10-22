@@ -202,20 +202,24 @@ const timeline = [
     </div>
   </section>
 
-  <section id="journey">
-    <h2 class="section-title">Journey</h2>
-    <ol class="timeline" data-timeline>
-      {
-        timeline.map((item, i) => (
-          <li class="timeline-item" style={`--i: ${i}`}>
-            <span class="timeline-dot" aria-hidden="true" />
-            <p class="timeline-year">{item.year}</p>
-            <h3>{item.title}</h3>
-            <p>{item.text}</p>
-          </li>
-        ))
-      }
-    </ol>
+  <section id="journey" class="journey" data-journey>
+    <div class="journey-sticky">
+      <h2 class="section-title">Journey</h2>
+      <div class="journey-viewport">
+        <ol class="journey-track">
+          {
+            timeline.map((item) => (
+              <li class="journey-item">
+                <span class="journey-dot" aria-hidden="true" />
+                <p class="journey-year">{item.year}</p>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
   </section>
 
   <Contact />
