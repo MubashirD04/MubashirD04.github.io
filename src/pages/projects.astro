@@ -108,7 +108,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
                         <source src={`${featured.video.src}.mp4`} type="video/mp4" />
                     </video>
                     <figcaption class="project-gallery-bar">
-                        <span class="project-gallery-note">Recorded in the demo workspace: made-up clients, scripted AI</span>
+                        Recorded in the demo workspace: made-up clients, scripted AI
                     </figcaption>
                 </figure>
                 <div class="project-feature-main">
@@ -117,10 +117,9 @@ const pad = (n: number) => String(n).padStart(2, "0");
                     <p class="project-feature-summary">{featured.summary}</p>
                     {featured.overview.map((para) => <p>{para}</p>)}
                     <div class="project-cta-row">
-                        <a class="project-cta" href={featured.link.href} target="_blank" rel="noopener">
+                        <a class="project-cta project-cta-primary" href={featured.link.href} target="_blank" rel="noopener">
                             {featured.link.label} <span aria-hidden="true">↗</span>
                         </a>
-                        <span class="project-cta-note">Live demo</span>
                         <span class="project-cta-hint">No sign-up: you get your own workspace of made-up clients. Free hosting, so the first load can take up to 30s.</span>
                     </div>
                 </div>
