@@ -392,16 +392,13 @@
     color: var(--text-muted);
 }
 
-.project-row-body.has-media {
-    display: grid;
-    grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
-    gap: 28px;
-    align-items: start;
-}
-
-.project-row-media {
+.project-row-video {
+    display: block;
     width: 100%;
     height: auto;
+    aspect-ratio: 16 / 10;
+    margin-bottom: 20px;
+    background: var(--footer-bg);
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-shadow);
 }
@@ -423,10 +420,5 @@
 
     .project-gallery-bar {
         padding: 10px 16px;
-    }
-
-    .project-row-body.has-media {
-        grid-template-columns: 1fr;
-        gap: 18px;
     }
 }

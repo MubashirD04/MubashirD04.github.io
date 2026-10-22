@@ -4,8 +4,6 @@ import { Image } from "astro:assets";
 import sbTransactions from "../assets/projects/simple-books-transactions.png";
 import sbClients from "../assets/projects/simple-books-clients.png";
 import sbLedger from "../assets/projects/simple-books-ledger.png";
-import jassShot from "../assets/projects/jass-annual-report.png";
-import aicdShot from "../assets/projects/ai-content-detector.png";
 
 const featured = {
     name: "Simple Books",
@@ -50,7 +48,7 @@ const projects = [
         ],
         tech: ["HTML", "CSS", "Vanilla JavaScript"],
         link: { href: "https://justassociates.org/mc/ar/2025/", label: "Visit site" },
-        media: { src: jassShot, alt: "JASS 2025 annual report microsite hero reading Audacious Hope" },
+        video: { src: "/media/projects/jass-annual-report", label: "Scrolling through the JASS 2025 annual report microsite" },
     },
     {
         name: "Tab Bridge",
@@ -70,8 +68,9 @@ const projects = [
             "A Flask backend API serves a self-trained detector model, with a React frontend for user interaction.",
         ],
         tech: ["Flask", "React", "Node.js", "REST APIs", "Pandas", "NumPy"],
-        link: { href: "https://github.com/meekaaeelBooley/AI-Content-Detector", label: "GitHub" },
-        media: { src: aicdShot, alt: "AI Content Detector on desktop and mobile, showing an AI probability score and highlighted text" },
+        link: { href: "https://aicd-nine.vercel.app/detect", label: "Visit site" },
+        repo: "https://github.com/meekaaeelBooley/AI-Content-Detector",
+        video: { src: "/media/projects/ai-content-detector", label: "Analysing a mixed human and AI sample, then the benchmarks page" },
     },
     {
         name: "Notes CLI",
@@ -180,25 +179,35 @@ const pad = (n: number) => String(n).padStart(2, "0");
                         </button>
                         <div class="project-row-detail" id={`project-detail-${i}`} role="region" aria-label={project.name}>
                             <div class="project-row-inner">
-                                <div class:list={["project-row-body", { "has-media": project.media }]}>
-                                    {project.media && (
-                                        <Image
-                                            src={project.media.src}
-                                            alt={project.media.alt}
-                                            widths={[480, 800]}
-                                            sizes="(max-width: 768px) 100vw, 360px"
-                                            loading="lazy"
-                                            class="project-row-media"
-                                        />
+                                <div class="project-row-body">
+                                    {project.video && (
+                                        <video
+                                            class="project-row-video"
+                                            muted
+                                            loop
+                                            playsinline
+                                            preload="none"
+                                            poster={`${project.video.src}.jpg`}
+                                            aria-label={project.video.label}
+                                        >
+                                            <source src={`${project.video.src}.mp4`} type="video/mp4" />
+                                        </video>
                                     )}
                                     <div class="project-row-copy">
                                         {project.overview.map((para) => <p>{para}</p>)}
                                         <ul class="project-tags">
                                             {project.tech.map((t) => <li>{t}</li>)}
                                         </ul>
-                                        <a class="project-cta" href={project.link.href} target="_blank" rel="noopener">
-                                            {project.link.label} <span aria-hidden="true">↗</span>
-                                        </a>
+                                        <div class="project-cta-row">
+                                            <a class="project-cta" href={project.link.href} target="_blank" rel="noopener">
+                                                {project.link.label} <span aria-hidden="true">↗</span>
+                                            </a>
+                                            {project.repo && (
+                                                <a class="project-cta" href={project.repo} target="_blank" rel="noopener">
+                                                    GitHub <span aria-hidden="true">↗</span>
+                                                </a>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
