@@ -3,6 +3,8 @@ import { setupMobileMenu } from './modules/menu.js';
 import { setupScroll } from './modules/scroll.js';
 import { setupTypewriter } from './modules/typewriter.js';
 import { setupAccordion } from './modules/accordion.js';
+import { setupGallery } from './modules/gallery.js';
+import { setupWake } from './modules/wake.js';
 import { setupProfileStats } from './modules/profile-stats.js';
 import { initChatbot } from './modules/chatbot.js';
 import { setupAsteroidsGame } from './modules/asteroids-game.js';
@@ -13,6 +15,8 @@ function initPortfolio() {
     setupScroll();
     setupTypewriter();
     setupAccordion();
+    setupGallery();
+    setupWake();
     setupProfileStats();
     initChatbot();
     setupAsteroidsGame();

@@ -144,6 +144,12 @@
     color: var(--text-light);
 }
 
+.project-cta-hint {
+    flex-basis: 100%;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
 .project-cta:hover,
 .project-cta:focus-visible {
     text-decoration: underline;
@@ -312,5 +318,115 @@
 
     .project-row-body {
         padding: 4px 8px 22px;
+    }
+}
+
+/* Project media */
+
+.project-gallery {
+    grid-column: 1 / -1;
+    margin: -40px -40px 0;
+    background: var(--footer-bg);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.project-gallery-frame {
+    display: grid;
+    padding: 28px 28px 0;
+}
+
+.project-gallery-img {
+    grid-area: 1 / 1;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--glass-border);
+    border-bottom: 0;
+    box-shadow: var(--glass-shadow);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s;
+}
+
+.project-gallery-img.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.project-gallery-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 12px 28px;
+    border-top: 1px solid var(--glass-border);
+}
+
+.project-gallery-tabs {
+    display: flex;
+    gap: 6px;
+}
+
+.project-gallery-tab {
+    padding: 5px 14px;
+    border: 1px solid var(--glass-border);
+    border-radius: 999px;
+    background: none;
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.project-gallery-tab:hover,
+.project-gallery-tab.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+}
+
+.project-gallery-note {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.project-row-body.has-media {
+    display: grid;
+    grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+}
+
+.project-row-media {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .project-gallery-img {
+        transition: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .project-gallery {
+        margin: -28px -22px 0;
+    }
+
+    .project-gallery-frame {
+        padding: 16px 16px 0;
+    }
+
+    .project-gallery-bar {
+        padding: 10px 16px;
+    }
+
+    .project-row-body.has-media {
+        grid-template-columns: 1fr;
+        gap: 18px;
     }
 }

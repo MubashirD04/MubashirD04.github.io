@@ -1,5 +1,11 @@
 ---
 import Layouts from "../layouts/layouts.astro";
+import { Image } from "astro:assets";
+import sbTransactions from "../assets/projects/simple-books-transactions.png";
+import sbClients from "../assets/projects/simple-books-clients.png";
+import sbLedger from "../assets/projects/simple-books-ledger.png";
+import jassShot from "../assets/projects/jass-annual-report.png";
+import aicdShot from "../assets/projects/ai-content-detector.png";
 
 const featured = {
     name: "Simple Books",
@@ -15,6 +21,14 @@ const featured = {
     ],
     tech: ["SvelteKit", "TypeScript", "Postgres", "Drizzle ORM", "pdf.js", "LLM API", "Clerk", "Docker", "Render"],
     link: { href: "https://simple-books-jyn9.onrender.com/login", label: "Visit site" },
+    // Free Render instance sleeps when idle; pinging this while the visitor reads cuts the ~30s cold start
+    wakeUrl: "https://simple-books-jyn9.onrender.com/healthz",
+    media: [
+        { src: sbTransactions, label: "Review", alt: "Simple Books transactions screen: AI-suggested categories with confidence scores and the balanced journal each one posts" },
+        { src: sbClients, label: "Clients", alt: "Simple Books client organisations overview with VAT201 due dates, transactions to review and overdue invoices" },
+        { src: sbLedger, label: "Ledger", alt: "Simple Books general ledger with a balanced trial balance and the journal entry behind one account" },
+    ],
+    mediaNote: "Screens from the product design spec",
 };
 
 const projects = [
@@ -36,6 +50,7 @@ const projects = [
         ],
         tech: ["HTML", "CSS", "Vanilla JavaScript"],
         link: { href: "https://justassociates.org/mc/ar/2025/", label: "Visit site" },
+        media: { src: jassShot, alt: "JASS 2025 annual report microsite hero reading Audacious Hope" },
     },
     {
         name: "Tab Bridge",
@@ -56,6 +71,7 @@ const projects = [
         ],
         tech: ["Flask", "React", "Node.js", "REST APIs", "Pandas", "NumPy"],
         link: { href: "https://github.com/meekaaeelBooley/AI-Content-Detector", label: "GitHub" },
+        media: { src: aicdShot, alt: "AI Content Detector on desktop and mobile, showing an AI probability score and highlighted text" },
     },
     {
         name: "Notes CLI",
@@ -87,7 +103,32 @@ const pad = (n: number) => String(n).padStart(2, "0");
         <h1 class="section-title">Selected Projects</h1>
 
         <div class="projects-layout">
-            <article class="card project-feature">
+            <article class="card project-feature" data-wake={featured.wakeUrl}>
+                <figure class="project-gallery" data-gallery>
+                    <div class="project-gallery-frame">
+                        {featured.media.map((m, i) => (
+                            <Image
+                                src={m.src}
+                                alt={m.alt}
+                                widths={[640, 1000, m.src.width]}
+                                sizes="(max-width: 1000px) 100vw, 1000px"
+                                loading={i === 0 ? "eager" : "lazy"}
+                                class:list={["project-gallery-img", { active: i === 0 }]}
+                                data-gallery-img={i}
+                            />
+                        ))}
+                    </div>
+                    <figcaption class="project-gallery-bar">
+                        <div class="project-gallery-tabs" role="group" aria-label="Simple Books screens">
+                            {featured.media.map((m, i) => (
+                                <button type="button" class:list={["project-gallery-tab", { active: i === 0 }]} aria-pressed={i === 0 ? "true" : "false"} data-gallery-tab={i}>
+                                    {m.label}
+                                </button>
+                            ))}
+                        </div>
+                        <span class="project-gallery-note">{featured.mediaNote}</span>
+                    </figcaption>
+                </figure>
                 <div class="project-feature-main">
                     <span class="project-badge">Currently building</span>
                     <h2>{featured.name}</h2>
@@ -97,7 +138,8 @@ const pad = (n: number) => String(n).padStart(2, "0");
                         <a class="project-cta" href={featured.link.href} target="_blank" rel="noopener">
                             {featured.link.label} <span aria-hidden="true">↗</span>
                         </a>
-                        <span class="project-cta-note">Demo</span>
+                        <span class="project-cta-note">Live demo</span>
+                        <span class="project-cta-hint">Free hosting, so the first load can take up to 30s</span>
                     </div>
                 </div>
                 <aside class="project-feature-side">
@@ -138,14 +180,26 @@ const pad = (n: number) => String(n).padStart(2, "0");
                         </button>
                         <div class="project-row-detail" id={`project-detail-${i}`} role="region" aria-label={project.name}>
                             <div class="project-row-inner">
-                                <div class="project-row-body">
-                                    {project.overview.map((para) => <p>{para}</p>)}
-                                    <ul class="project-tags">
-                                        {project.tech.map((t) => <li>{t}</li>)}
-                                    </ul>
-                                    <a class="project-cta" href={project.link.href} target="_blank" rel="noopener">
-                                        {project.link.label} <span aria-hidden="true">↗</span>
-                                    </a>
+                                <div class:list={["project-row-body", { "has-media": project.media }]}>
+                                    {project.media && (
+                                        <Image
+                                            src={project.media.src}
+                                            alt={project.media.alt}
+                                            widths={[480, 800]}
+                                            sizes="(max-width: 768px) 100vw, 360px"
+                                            loading="lazy"
+                                            class="project-row-media"
+                                        />
+                                    )}
+                                    <div class="project-row-copy">
+                                        {project.overview.map((para) => <p>{para}</p>)}
+                                        <ul class="project-tags">
+                                            {project.tech.map((t) => <li>{t}</li>)}
+                                        </ul>
+                                        <a class="project-cta" href={project.link.href} target="_blank" rel="noopener">
+                                            {project.link.label} <span aria-hidden="true">↗</span>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
