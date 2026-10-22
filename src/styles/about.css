@@ -153,3 +153,445 @@
         transition: none;
     }
 }
+
+.game-card {
+  max-width: 360px;
+  margin: 40px auto;
+  background: var(--card-bg);                 
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--glass-shadow);
+  padding: 24px;
+  border-radius: var(--radius-card);
+  color: var(--text-main);
+  font-family: var(--font-family);           
+  box-sizing: border-box;
+  transition: var(--transition-smooth);      
+}
+
+.game-card .card-header { 
+  border-bottom: 1px solid var(--glass-border); 
+  padding-bottom: 8px; 
+  margin-bottom: 16px; 
+}
+.game-card .card-header small { 
+  color: var(--text-muted); 
+  text-transform: uppercase; 
+  font-weight: 600; 
+  font-size: var(--fs-small); 
+  letter-spacing: 0.08em;
+}
+.game-card .card-header h2 { 
+  margin: 4px 0 0; 
+  text-transform: uppercase; 
+  font-size: var(--fs-title); 
+  font-weight: 700;
+}
+
+.game-card .profile-grid { 
+  display: grid; 
+  grid-template-columns: 1fr 2fr; 
+  gap: 16px; 
+  margin-bottom: 20px; 
+}
+
+.game-card .avatar {
+  aspect-ratio: 1;
+  background: var(--footer-bg);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  font-size: 28px;
+}
+.game-card .avatar b { 
+  position: absolute; 
+  bottom: 0; 
+  width: 100%; 
+  background: var(--primary-color); 
+  color: #fff; 
+  font-size: 10px; 
+  text-align: center; 
+  padding: 2px 0; 
+  text-transform: uppercase;
+}
+
+.game-card .perks { 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; 
+  gap: 6px; 
+  font-size: var(--fs-small); 
+  color: var(--text-muted);
+}
+.game-card .perk-bullet {
+  color: var(--clr);
+  margin-right: 4px;
+  font-weight: bold;
+}
+
+.game-card .attributes, 
+.game-card .inventory { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 12px; 
+  margin-top: 16px; 
+}
+.game-card .attributes h3, 
+.game-card .inventory h3 { 
+  font-size: var(--fs-small); 
+  font-weight: 600;
+  color: var(--text-muted); 
+  text-transform: uppercase; 
+  margin: 0; 
+  letter-spacing: 0.08em;
+}
+
+.game-card .stat label { 
+  display: flex; 
+  justify-content: space-between; 
+  font-size: var(--fs-small); 
+  font-weight: 600; 
+  color: var(--text-main);
+  margin-bottom: 6px; 
+}
+.game-card .stat label span {
+  color: var(--text-muted);
+}
+
+.game-card .bar { 
+  height: 6px; 
+  background: var(--footer-bg); 
+  border: 1px solid var(--glass-border); 
+  overflow: hidden; 
+}
+
+.game-card .fill {
+  height: 100%;
+  background-color: var(--clr);
+  width: 0%; 
+  transition: width 1.2s cubic-bezier(0.1, 0.8, 0.2, 1);
+}
+
+.game-card .inventory {
+  border-top: 1px solid var(--glass-border);
+  padding-top: 12px;
+}
+.game-card .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* Astro Blaster: flip-card + arcade overlay */
+
+.skill-tag-game {
+  cursor: pointer;
+  position: relative;
+  transition: var(--transition-smooth);
+}
+.skill-tag-game:hover,
+.skill-tag-game:focus-visible {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.arcade-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin: 40px 0;
+  transition: gap 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.game-card-wrapper {
+  flex: 0 0 auto;
+  width: min(360px, 100%);
+  perspective: 1600px;
+}
+
+.game-card-inner {
+  position: relative;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  /* a backdrop-filter flattens the 3D context, which makes Firefox ignore
+     backface-visibility and show the other face through this one */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: var(--card-solid);
+}
+.card-face-front {
+  margin: 0;
+}
+.card-face-back {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+}
+
+.leaderboard {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 4px 0 20px;
+  padding: 0;
+  counter-reset: rank;
+  flex: 1;
+}
+.leaderboard li {
+  counter-increment: rank;
+  display: flex;
+  align-items: center;
+  font-size: var(--fs-small);
+  padding: 6px 10px;
+  background: var(--footer-bg);
+  border: 1px solid var(--glass-border);
+}
+.leaderboard li::before {
+  content: counter(rank) ".";
+  color: var(--text-muted);
+  font-weight: 700;
+  margin-right: 8px;
+}
+.lb-name {
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+.lb-score {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.leaderboard li.is-latest {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  font-weight: 700;
+}
+.leaderboard-empty {
+  color: var(--text-muted);
+  justify-content: center !important;
+  font-style: italic;
+}
+.leaderboard-empty::before {
+  content: "" !important;
+  margin: 0 !important;
+}
+
+.game-exit-btn {
+  margin-top: auto;
+  background: var(--footer-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+  font-family: var(--font-family);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: var(--fs-small);
+  letter-spacing: 0.08em;
+  padding: 10px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+.game-exit-btn:hover,
+.game-exit-btn:focus-visible {
+  background: var(--primary-color);
+  color: #fff;
+  outline: none;
+}
+
+.game-arena {
+  flex: 0 0 auto;
+  width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+}
+
+.game-hud {
+  display: flex;
+  justify-content: space-between;
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+.game-screen {
+  position: relative;
+  display: flex;
+}
+
+.rickroll {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  background: rgba(5, 7, 12, 0.94);
+  border: 2px solid var(--primary-color);
+}
+.rickroll[hidden] {
+  /* kept in layout rather than display:none so the preloaded player can buffer,
+     but invisible, inert and out of the tab order until it fires */
+  display: flex;
+  visibility: hidden;
+  pointer-events: none;
+}
+.rickroll-title {
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: #facc15;
+  text-align: center;
+}
+.rickroll-frame {
+  /* never grow or shrink: flexing it would stretch one axis and break the 16:9 ratio */
+  flex: 0 0 auto;
+  width: min(100%, 560px);
+  aspect-ratio: 16 / 9;
+  align-self: center;
+  background: #000;
+}
+.rickroll-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+.rickroll-close {
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  padding: 8px 18px;
+  color: #05070c;
+  background: var(--primary-color);
+  border: 0;
+  cursor: pointer;
+}
+.rickroll-close:hover,
+.rickroll-close:focus-visible {
+  background: #facc15;
+  outline: none;
+}
+
+#gameCanvas {
+  width: 100%;
+  aspect-ratio: 384 / 240;
+  /* a finger on the board aims the ship, so the browser must not read the same
+     drag as a page scroll or a double-tap zoom */
+  touch-action: none;
+  background: #05070c;
+  border: 2px solid var(--primary-color);
+  box-shadow: var(--glass-shadow);
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.game-initials-input {
+  /* invisible, but still focusable, which is what opens the phone keyboard.
+     display:none or visibility:hidden would make focus() a no-op. */
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+  font-size: 16px;   /* anything smaller makes iOS zoom the page on focus */
+}
+
+.game-hint {
+  font-family: "Courier New", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.game-hint-touch {
+  display: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .game-hint-keys {
+    display: none;
+  }
+  .game-hint-touch {
+    display: inline;
+  }
+}
+
+/* Active state, toggled on <body> by the game module */
+body.game-active .arcade-stage {
+  gap: 24px;
+}
+body.game-active .game-arena {
+  /* 112vh == 70vh scaled by the canvas' 1.6 aspect, so the board never outgrows the screen */
+  width: min(calc(100% - 384px), 112vh);
+  opacity: 1;
+  pointer-events: auto;
+}
+body.game-active .game-card-inner {
+  transform: rotateY(180deg);
+}
+
+@media (max-width: 860px) {
+  .arcade-stage {
+    flex-direction: column;
+  }
+  /* stacked, width: 0 no longer collapses the closed arena, so it would
+     leave its full height as dead space under the card */
+  .game-arena {
+    height: 0;
+    transition: height 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+  }
+  body.game-active .game-arena {
+    width: 100%;
+    height: auto;
+  }
+  .game-hint {
+    white-space: normal;
+  }
+  .rickroll {
+    gap: 6px;
+    padding: 8px;
+  }
+  .rickroll-title {
+    font-size: 0.6rem;
+  }
+  .rickroll-frame {
+    /* the short game screen runs out of height first here, so drive size from height */
+    width: auto;
+    height: 60%;
+  }
+}

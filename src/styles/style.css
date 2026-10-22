@@ -711,18 +711,19 @@ footer {
     z-index: 2001;
     padding: 9px 20px;
     border-radius: 7px;
-    background: var(--primary-color);
-    color: #fff;
+    /* same colour as the menu button beside it, in both themes */
+    background: var(--text-main);
+    color: var(--bg-light);
     font-size: var(--fs-small);
     font-weight: 600;
     text-decoration: none;
     box-shadow: var(--glass-shadow);
-    transition: background-color 0.2s ease;
+    transition: opacity 0.2s ease;
 }
 
 .hire-btn:hover,
 .hire-btn:focus-visible {
-    background: var(--secondary-color);
+    opacity: 0.85;
 }
 
 /* CV viewer (desktop; phones open the PDF in a new tab instead) */
