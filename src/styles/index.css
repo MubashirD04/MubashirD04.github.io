@@ -2,37 +2,33 @@
 
 #hero {
     min-height: 95vh;
-    display: flex;
-    align-items: center;
     position: relative;
-    justify-content: center;
-    background: var(--bg-light);
-    padding: 100px 5vw 18vh;
-    gap: 50px;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 6vw 18vh;
 }
 
 #header {
-    flex: 0 1 auto;
-    width: 550px;
-    max-width: 100%;
+    max-width: 560px;
     text-align: left;
     padding: 0;
 }
 
 .hero-tiger-wrapper {
-    flex: 0 1 auto;
-    min-width: 300px;
-    max-height: 60vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    min-width: 0;
 }
 
 .hero-tiger-img {
-    max-width: 100%;
-    max-height: 55vh;
-    width: 500px;
+    width: 100%;
+    max-width: 500px;
+    max-height: 60vh;
     height: auto;
     object-fit: contain;
     animation: fadeInUp 0.8s cubic-bezier(0.23, 1, 0.32, 1) 0.15s forwards;
@@ -40,30 +36,25 @@
     transform: translateY(30px);
 }
 
-@media (max-width: 1100px) {
+/* Phones: stack, still left-aligned, text first */
+@media (max-width: 768px) {
     #hero {
-        flex-direction: column;
-        text-align: center;
-        padding-top: 120px;
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding: 120px 6vw 48px;
         gap: 32px;
     }
-    #header {
-        text-align: center;
-    }
-    .hero-subtitle {
-        margin-inline: auto;
-    }
-    .hero-actions {
-        justify-content: center;
-    }
     .hero-tiger-wrapper {
-        justify-content: center;
-        min-width: 0;
+        justify-content: flex-start;
     }
     .hero-tiger-img {
-        width: 300px;
+        max-width: 280px;
     }
-    .scroll-indicator {
+}
+
+/* The scroll hint only has room below the hero on wide screens */
+@media (max-width: 1100px) {
+    #hero .scroll-indicator {
         display: none;
     }
 }

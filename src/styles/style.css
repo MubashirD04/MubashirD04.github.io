@@ -29,6 +29,7 @@
     --fs-small: 0.8125rem;
     --radius-card: 12px;
     --about-me: #fff;
+    --dot-color: rgba(5, 49, 85, 0.09);
 }
 
 [data-theme="dark"] {
@@ -44,6 +45,7 @@
     --footer-bg: rgba(20, 30, 41, 0.4);
     --overlay-bg: rgba(10, 15, 20, 0.7);
     --about-me: #e9e9ea;
+    --dot-color: rgba(238, 245, 250, 0.07);
 }
 
 /* Custom Scrollbar */
@@ -112,6 +114,11 @@ main {
     height: 100vh;
     overflow-y: scroll; 
     overflow-x: hidden;
+    /* Faint dot grid; "local" so it scrolls with the content */
+    background-color: var(--bg-light);
+    background-image: radial-gradient(var(--dot-color) 1px, transparent 1.5px);
+    background-size: 22px 22px;
+    background-attachment: local;
     
     border: 20px solid #fffdfd; 
     box-sizing: border-box;
