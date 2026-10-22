@@ -8,7 +8,7 @@ export function setupTypewriter() {
         });
     }, { threshold: 0.8 });
 
-    document.querySelectorAll('.hero-title, .section-title, .about-heading').forEach(el => {
+    document.querySelectorAll('.section-title, .about-heading').forEach(el => {
         el.dataset.text = el.innerText;
         el.innerText = '';
         observer.observe(el);
@@ -59,15 +59,7 @@ function typeText(element) {
                     promptSpan.style.opacity = '0';
                 });
                 
-                setTimeout(() => {
-                    promptSpan.remove();
-                    if (element.classList.contains('hero-title')) {
-                        const subtitle = document.querySelector('.hero-subtitle');
-                        if (subtitle) subtitle.classList.add('fade-in');
-                        const scrollInd = document.querySelector('.scroll-indicator');
-                        if (scrollInd) scrollInd.classList.add('fade-in');
-                    }
-                }, 300);
+                setTimeout(() => promptSpan.remove(), 300);
             }, 1000);
         }
     };
