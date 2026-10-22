@@ -14,13 +14,8 @@
 }
 
 .about-card {
-    font-size: 1.1rem;
-}
-
-@media (max-width: 768px) {
-    .about-card {
-        font-size: 1.0rem;
-    }
+    font-size: var(--fs-body);
+    line-height: 1.6;
 }
 
 .game-card {
@@ -31,6 +26,7 @@
   -webkit-backdrop-filter: blur(12px);
   box-shadow: var(--glass-shadow);
   padding: 24px;
+  border-radius: var(--radius-card);
   color: var(--text-main);
   font-family: var(--font-family);           
   box-sizing: border-box;
@@ -43,16 +39,16 @@
   margin-bottom: 16px; 
 }
 .game-card .card-header small { 
-  color: var(--text-light); 
+  color: var(--text-muted); 
   text-transform: uppercase; 
-  font-weight: 700; 
-  font-size: 0.75rem; 
-  letter-spacing: 0.05em;
+  font-weight: 600; 
+  font-size: var(--fs-small); 
+  letter-spacing: 0.08em;
 }
 .game-card .card-header h2 { 
   margin: 4px 0 0; 
   text-transform: uppercase; 
-  font-size: 1.8rem; 
+  font-size: var(--fs-title); 
   font-weight: 700;
 }
 
@@ -91,7 +87,7 @@
   flex-direction: column; 
   justify-content: center; 
   gap: 6px; 
-  font-size: 0.85rem; 
+  font-size: var(--fs-small); 
   color: var(--text-muted);
 }
 .game-card .perk-bullet {
@@ -109,17 +105,18 @@
 }
 .game-card .attributes h3, 
 .game-card .inventory h3 { 
-  font-size: 0.75rem; 
-  color: var(--text-light); 
+  font-size: var(--fs-small); 
+  font-weight: 600;
+  color: var(--text-muted); 
   text-transform: uppercase; 
   margin: 0; 
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
 }
 
 .game-card .stat label { 
   display: flex; 
   justify-content: space-between; 
-  font-size: 0.8rem; 
+  font-size: var(--fs-small); 
   font-weight: 600; 
   color: var(--text-main);
   margin-bottom: 6px; 
@@ -157,7 +154,6 @@
 .skill-tag-game {
   cursor: pointer;
   position: relative;
-  border: 1px solid transparent;
   transition: var(--transition-smooth);
 }
 .skill-tag-game:hover,
@@ -225,14 +221,14 @@
   counter-increment: rank;
   display: flex;
   align-items: center;
-  font-size: 0.85rem;
+  font-size: var(--fs-small);
   padding: 6px 10px;
   background: var(--footer-bg);
   border: 1px solid var(--glass-border);
 }
 .leaderboard li::before {
   content: counter(rank) ".";
-  color: var(--text-light);
+  color: var(--text-muted);
   font-weight: 700;
   margin-right: 8px;
 }
@@ -269,8 +265,8 @@
   font-family: var(--font-family);
   font-weight: 700;
   text-transform: uppercase;
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
+  font-size: var(--fs-small);
+  letter-spacing: 0.08em;
   padding: 10px;
   cursor: pointer;
   transition: var(--transition-smooth);
