@@ -1,9 +1,5 @@
 ---
 import Layouts from "../layouts/layouts.astro";
-import { Image } from "astro:assets";
-import sbTransactions from "../assets/projects/simple-books-transactions.png";
-import sbClients from "../assets/projects/simple-books-clients.png";
-import sbLedger from "../assets/projects/simple-books-ledger.png";
 
 const featured = {
     name: "Simple Books",
@@ -18,15 +14,10 @@ const featured = {
         "Anything sent to the AI is masked and schema-validated first",
     ],
     tech: ["SvelteKit", "TypeScript", "Postgres", "Drizzle ORM", "pdf.js", "LLM API", "Clerk", "Docker", "Render"],
-    link: { href: "https://simple-books-jyn9.onrender.com/login", label: "Visit site" },
+    link: { href: "https://simple-books-jyn9.onrender.com/demo", label: "Try the demo" },
     // Free Render instance sleeps when idle; pinging this while the visitor reads cuts the ~30s cold start
     wakeUrl: "https://simple-books-jyn9.onrender.com/healthz",
-    media: [
-        { src: sbTransactions, label: "Review", alt: "Simple Books transactions screen: AI-suggested categories with confidence scores and the balanced journal each one posts" },
-        { src: sbClients, label: "Clients", alt: "Simple Books client organisations overview with VAT201 due dates, transactions to review and overdue invoices" },
-        { src: sbLedger, label: "Ledger", alt: "Simple Books general ledger with a balanced trial balance and the journal entry behind one account" },
-    ],
-    mediaNote: "Screens from the product design spec",
+    video: { src: "/media/projects/simple-books", label: "Simple Books demo: reviewing an AI suggestion, confirming a batch, then the trial balance" },
 };
 
 const projects = [
@@ -103,29 +94,21 @@ const pad = (n: number) => String(n).padStart(2, "0");
 
         <div class="projects-layout">
             <article class="card project-feature" data-wake={featured.wakeUrl}>
-                <figure class="project-gallery" data-gallery>
-                    <div class="project-gallery-frame">
-                        {featured.media.map((m, i) => (
-                            <Image
-                                src={m.src}
-                                alt={m.alt}
-                                widths={[640, 1000, m.src.width]}
-                                sizes="(max-width: 1000px) 100vw, 1000px"
-                                loading={i === 0 ? "eager" : "lazy"}
-                                class:list={["project-gallery-img", { active: i === 0 }]}
-                                data-gallery-img={i}
-                            />
-                        ))}
-                    </div>
+                <figure class="project-gallery">
+                    <video
+                        class="project-gallery-video"
+                        muted
+                        loop
+                        playsinline
+                        preload="metadata"
+                        poster={`${featured.video.src}.jpg`}
+                        aria-label={featured.video.label}
+                        data-play-in-view
+                    >
+                        <source src={`${featured.video.src}.mp4`} type="video/mp4" />
+                    </video>
                     <figcaption class="project-gallery-bar">
-                        <div class="project-gallery-tabs" role="group" aria-label="Simple Books screens">
-                            {featured.media.map((m, i) => (
-                                <button type="button" class:list={["project-gallery-tab", { active: i === 0 }]} aria-pressed={i === 0 ? "true" : "false"} data-gallery-tab={i}>
-                                    {m.label}
-                                </button>
-                            ))}
-                        </div>
-                        <span class="project-gallery-note">{featured.mediaNote}</span>
+                        <span class="project-gallery-note">Recorded in the demo workspace: made-up clients, scripted AI</span>
                     </figcaption>
                 </figure>
                 <div class="project-feature-main">
@@ -138,7 +121,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
                             {featured.link.label} <span aria-hidden="true">↗</span>
                         </a>
                         <span class="project-cta-note">Live demo</span>
-                        <span class="project-cta-hint">Free hosting, so the first load can take up to 30s</span>
+                        <span class="project-cta-hint">No sign-up: you get your own workspace of made-up clients. Free hosting, so the first load can take up to 30s.</span>
                     </div>
                 </div>
                 <aside class="project-feature-side">
