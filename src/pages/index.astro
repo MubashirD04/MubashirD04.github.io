@@ -11,10 +11,16 @@ import tiger_pc from "../assets/Tiger/Tiger_pc_bgr.png";
 >
   <div id="hero">
     <section id="header">
-      <h1 class="hero-title">Hi, my name is Mubashir</h1>
-      <h2 class="hero-subtitle">
-        I'm a junior developer from Cape Town,<br /> South Africa
-      </h2>
+      <p class="hero-eyebrow">Software engineer</p>
+      <h1 class="hero-title">Hi, I'm Mubashir.</h1>
+      <p class="hero-subtitle">
+        I build AI-native backends and the web apps on top of them, from
+        bank-statement parsers and accounting engines to RAG pipelines.
+      </p>
+      <div class="hero-actions">
+        <a href="/projects" class="hero-btn hero-btn-primary">View projects</a>
+        <a href="#contact" class="hero-btn hero-btn-secondary">Get in touch</a>
+      </div>
     </section>
     <div class="hero-tiger-wrapper">
       <Image
@@ -31,18 +37,15 @@ import tiger_pc from "../assets/Tiger/Tiger_pc_bgr.png";
   </div>
 
   <section id="about-cta">
-    <h2 class="about-heading">Lets work together</h2>
+    <h2 class="about-heading">Let's work together</h2>
     <div class="about-text">
       <p>
-        <span class="mobile-inline"
-          >I'm a junior developer from Cape Town, South Africa.</span
-        >
         From optimizing complex data pipelines to scaling background workers, high-throughput
         APIs to crafting seamless progressive web apps. I help awesome people turn
         ambitious ideas into fast, reliable, and accessible digital infrastructure.
       </p>
     </div>
-    <a href="/about" class="about-cta-button">About me</a>
+    <a href="/about" class="hero-btn hero-btn-secondary">About me</a>
   </section>
 
   <section id="current-focus">
@@ -71,7 +74,11 @@ import tiger_pc from "../assets/Tiger/Tiger_pc_bgr.png";
         >
       </div>
 
-      <div class="current-project-card" id="project-2">
+      <div
+        class="current-project-card"
+        id="project-2"
+        data-wake="https://simple-books-jyn9.onrender.com/healthz"
+      >
         <h3>Simple Books</h3>
         <p>
           An AI-native accounting web app built for South African accountants.
@@ -83,9 +90,9 @@ import tiger_pc from "../assets/Tiger/Tiger_pc_bgr.png";
           Postgres, and deployed on Render.
         </p>
         <a
-          href="https://simple-books-jyn9.onrender.com/login"
+          href="https://simple-books-jyn9.onrender.com/demo"
           target="_blank"
-          class="project-link">Live Site</a
+          class="project-link">Try the demo</a
         >
       </div>
     </div>

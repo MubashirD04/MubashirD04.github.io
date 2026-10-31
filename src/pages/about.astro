@@ -1,6 +1,36 @@
 ---
 import Layouts from "../layouts/layouts.astro";
 import Contact from "../components/Contact.astro";
+
+// Placeholder entries: replace the years and text with your own. Order is oldest first.
+const timeline = [
+  {
+    year: "20XX",
+    title: "Started Computer Science at UCT",
+    text: "Began a BSc in Computer Science at the University of Cape Town.",
+  },
+  {
+    year: "2025",
+    title: "Capstone: AI Content Detector",
+    text: "Final-year team project: a transformer-based detector behind a Flask API with a React frontend.",
+  },
+  {
+    year: "20XX",
+    title: "Graduated",
+    text: "Completed the BSc in Computer Science.",
+  },
+  {
+    year: "20XX",
+    title: "Client work: JASS annual report",
+    text: "Built an interactive microsite for Just Associates' 2025 annual report.",
+  },
+  {
+    year: "Now",
+    title: "Building Simple Books",
+    text: "An AI-native accounting app for South African accountants, from bank statement to VAT201.",
+  },
+];
+
 ---
 
 <Layouts
@@ -155,7 +185,7 @@ import Contact from "../components/Contact.astro";
         mechanics of software. Whether I'm architecting a Go backend, optimizing
         a data pipeline, or fine-tuning an API, I'm driven by a need for
         performance and correctness.
-      </p><br />
+      </p>
       <p>
         My approach to engineering is influenced by my life outside of the IDE.
         As a martial arts and fitness enthusiast, I believe in the power of
@@ -163,12 +193,32 @@ import Contact from "../components/Contact.astro";
         translate directly to writing clean, maintainable code. When I'm not
         debugging systems or training, you'll likely find me absorbed in a
         strategy game or lost in a book.
-      </p><br />
+      </p>
       <p>
         I'm on the hunt for a graduate or junior role that has an
         engineering-focused team where I can dig deep into backend services,
         systems programming, or data-driven application development.
       </p>
+    </div>
+  </section>
+
+  <section id="journey" class="journey" data-journey>
+    <div class="journey-sticky">
+      <h2 class="section-title">Journey</h2>
+      <div class="journey-viewport">
+        <ol class="journey-track">
+          {
+            timeline.map((item) => (
+              <li class="journey-item">
+                <span class="journey-dot" aria-hidden="true" />
+                <p class="journey-year">{item.year}</p>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
     </div>
   </section>
 

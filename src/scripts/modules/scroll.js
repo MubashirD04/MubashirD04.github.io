@@ -13,7 +13,7 @@ function setupScrollReveal() {
         });
     }, { threshold: 0.1 });
 
-    document.querySelectorAll('section, .card').forEach(el => {
+    document.querySelectorAll('section:not([data-journey]), .card').forEach(el => {
         el.classList.add('reveal-hidden');
         observer.observe(el);
     });

@@ -1,4 +1,27 @@
 ---
+const channels = [
+  {
+    label: "Email",
+    value: "mubashir.dawood4@gmail.com",
+    href: "mailto:mubashir.dawood4@gmail.com",
+  },
+  {
+    label: "LinkedIn",
+    value: "linkedin.com/in/mubashir-dawood-2b2a79206",
+    href: "https://www.linkedin.com/in/mubashir-dawood-2b2a79206/",
+  },
+  {
+    label: "GitHub",
+    value: "github.com/MubashirD04",
+    href: "https://github.com/MubashirD04",
+  },
+  { label: "X", value: "x.com/DevByMubs", href: "https://x.com/DevByMubs" },
+  {
+    label: "WhatsApp",
+    value: "+27 82 760 5538",
+    href: "https://wa.me/27827605538",
+  },
+];
 ---
 
 <section id="contact">
@@ -7,43 +30,25 @@
     <p class="contact-intro">
       Interested in working together? Let's build something extraordinary.
     </p>
-    <p>
-      <strong>LinkedIn:</strong>
-      <a
-        href="https://www.linkedin.com/in/mubashir-dawood-2b2a79206/"
-        class="contact-link"
-        target="_blank"
-        rel="noopener noreferrer">linkedin.com/in/mubashir-dawood-2b2a79206/</a
-      >
-    </p>
-    <p><strong>Email:</strong> mubashir.dawood4@gmail.com</p>
-    <p>
-      <strong>GitHub:</strong>
-      <a
-        href="https://github.com/MubashirD04"
-        class="contact-link"
-        target="_blank"
-        rel="noopener noreferrer">github.com/MubashirD04</a
-      >
-    </p>
-    <p>
-      <strong>X:</strong>
-      <a
-        href="https://x.com/DevByMubs"
-        class="contact-link"
-        target="_blank"
-        rel="noopener noreferrer">x.com/DevByMubs</a
-      >
-    </p>
-    <p>
-      <strong>WhatsApp:</strong>
-      <a
-        href="https://wa.me/27827605538"
-        class="contact-link"
-        target="_blank"
-        rel="noopener noreferrer">+27 82 760 5538</a
-      >
-    </p>
+    <dl class="contact-list">
+      {
+        channels.map((c) => (
+          <div class="contact-row">
+            <dt>{c.label}</dt>
+            <dd>
+              <a
+                href={c.href}
+                class="contact-link"
+                target={c.href.startsWith("http") ? "_blank" : undefined}
+                rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
+              >
+                {c.value}
+              </a>
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
     <a href="mailto:mubashir.dawood4@gmail.com" class="btn btn-primary"
       >Send a Message</a
     >

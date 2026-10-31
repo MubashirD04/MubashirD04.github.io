@@ -18,8 +18,18 @@
     --font-family: 'Outfit', sans-serif;
     --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     --line-height: 1.5;
-    --font-size: 1.2rem;
+    /*
+     * Type scale, used everywhere: display is only for the hero name. Colour follows the
+     * same restraint: --text-main, --text-muted, and --primary-color only for actions.
+     */
+    --fs-display: clamp(2.75rem, 6vw, 4rem);
+    --fs-title: clamp(1.75rem, 3vw, 2.25rem);
+    --fs-lead: 1.25rem;
+    --fs-body: 1rem;
+    --fs-small: 0.8125rem;
+    --radius-card: 12px;
     --about-me: #fff;
+    --dot-color: rgba(5, 49, 85, 0.09);
 }
 
 [data-theme="dark"] {
@@ -35,6 +45,7 @@
     --footer-bg: rgba(20, 30, 41, 0.4);
     --overlay-bg: rgba(10, 15, 20, 0.7);
     --about-me: #e9e9ea;
+    --dot-color: rgba(238, 245, 250, 0.07);
 }
 
 /* Custom Scrollbar */
@@ -103,6 +114,11 @@ main {
     height: 100vh;
     overflow-y: scroll; 
     overflow-x: hidden;
+    /* Faint dot grid; "local" so it scrolls with the content */
+    background-color: var(--bg-light);
+    background-image: radial-gradient(var(--dot-color) 1px, transparent 1.5px);
+    background-size: 22px 22px;
+    background-attachment: local;
     
     border: 20px solid #fffdfd; 
     box-sizing: border-box;
@@ -261,7 +277,7 @@ nav {
 .nav-theme-item .theme-toggle {
     color: var(--text-main);
     text-decoration: none;
-    font-size: 1.4rem;
+    font-size: var(--fs-lead);
     font-weight: 600;
     transition: all 0.3s ease;
     display: flex;
@@ -282,7 +298,7 @@ nav {
     background: rgba(66, 66, 66, 0.046);
     padding: 10px 25px;
     border-radius: 10px;
-    font-size: 1.1rem;
+    font-size: var(--fs-body);
     border: none;
     width: auto; /* Label button shouldn't be full width */
 }
@@ -355,41 +371,11 @@ section {
 }
 
 .section-title {
-    font-size: 2.5rem;
+    font-size: var(--fs-title);
+    line-height: 1.2;
     margin-bottom: 40px;
     margin-top: 30px;
     text-align: center;
-    position: relative;
-    padding-left: 1.5rem;
-}
-
-.section-title::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 4px;
-    background: var(--primary-color);
-    border-radius: 0;
-}
-
-.typewriter-prompt {
-    color: var(--primary-color);
-    font-weight: 700;
-    margin-right: 5px;
-}
-
-.typewriter-cursor {
-    font-weight: 300;
-    color: var(--primary-color);
-    animation: blink 1s step-end infinite;
-}
-
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
 }
 
 .grid {
@@ -412,7 +398,7 @@ section {
     -webkit-backdrop-filter: blur(12px);
     box-shadow: var(--glass-shadow);
     padding: 40px;
-    border-radius: 0;
+    border-radius: var(--radius-card);
     transition: var(--transition-smooth);
     overflow: hidden;
     position: relative;
@@ -427,9 +413,53 @@ section {
 
 .contact-intro {
     margin-bottom: 20px;
+    font-size: var(--fs-lead);
+}
+
+.contact-list {
+    display: grid;
+    gap: 10px;
+    margin: 0 auto 8px;
+    max-width: 420px;
+    text-align: left;
+}
+
+.contact-row {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 16px;
+    align-items: baseline;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.contact-row dt {
+    font-size: var(--fs-small);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.contact-row dd {
+    margin: 0;
+    overflow-wrap: break-word;
+}
+
+@media (max-width: 480px) {
+    .contact-row {
+        grid-template-columns: 1fr;
+        gap: 2px;
+    }
 }
 
 .contact-link {
+    color: var(--text-main);
+    text-decoration: none;
+}
+
+.contact-link:hover,
+.contact-link:focus-visible {
     color: var(--primary-color);
 }
 
@@ -455,9 +485,10 @@ section {
 
 .btn {
     display: inline-block;
-    padding: 12px 30px;
-    border-radius: 0;
+    padding: 12px 26px;
+    border-radius: 7px;
     text-decoration: none;
+    font-size: var(--fs-body);
     font-weight: 600;
     transition: all 0.3s ease;
     margin-top: 20px;
@@ -662,7 +693,7 @@ footer {
 
 .footer-bottom {
     color: var(--text-muted);
-    font-size: 0.9rem;
+    font-size: var(--fs-small);
 }
 
 .footer-bottom p {
@@ -673,4 +704,104 @@ footer {
     footer {
         padding: 10px 10vw 60px;
     }
+}
+/* Hire me: sits at the right of the nav, level with the menu button */
+.hire-btn {
+    position: relative;
+    z-index: 2001;
+    padding: 9px 20px;
+    border-radius: 7px;
+    /* same colour as the menu button beside it, in both themes */
+    background: var(--text-main);
+    color: var(--bg-light);
+    font-size: var(--fs-small);
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: var(--glass-shadow);
+    transition: opacity 0.2s ease;
+}
+
+.hire-btn:hover,
+.hire-btn:focus-visible {
+    opacity: 0.85;
+}
+
+/* CV viewer (desktop; phones open the PDF in a new tab instead) */
+.cv-dialog {
+    width: min(900px, 92vw);
+    height: min(90vh, 1100px);
+    margin: auto;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-card);
+    background: var(--card-solid);
+    color: var(--text-main);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+}
+
+.cv-dialog[open] {
+    display: flex;
+    flex-direction: column;
+}
+
+.cv-dialog::backdrop {
+    background: var(--overlay-bg);
+    backdrop-filter: blur(4px);
+}
+
+.cv-dialog-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 16px 12px 20px;
+    border-bottom: 1px solid var(--glass-border);
+    font-size: var(--fs-small);
+}
+
+.cv-dialog-title {
+    font-weight: 600;
+}
+
+.cv-dialog-actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.cv-dialog-actions a {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.cv-dialog-actions a:hover,
+.cv-dialog-actions a:focus-visible {
+    text-decoration: underline;
+}
+
+.cv-dialog-close {
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 7px;
+    background: none;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.cv-dialog-close:hover,
+.cv-dialog-close:focus-visible {
+    background: var(--footer-bg);
+    color: var(--text-main);
+}
+
+.cv-dialog-frame {
+    flex: 1;
+    width: 100%;
+    border: 0;
+    background: #fff;
 }
