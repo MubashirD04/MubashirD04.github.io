@@ -14,6 +14,8 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
     "astro": "^7.3.2",
+    "lenis": "^1.1.18",
+    "motion": "^11.15.0",
     "npm": "^11.17.0"
   }
 }

@@ -112,6 +112,9 @@ main {
 /* This wrapper acts as your fixed frame AND handles content scrolling */
 #page-wrapper {
     height: 100vh;
+    /* Motion's scroll() measures offsets against this container, which needs a
+       non-static position to report them correctly. */
+    position: relative;
     overflow-y: scroll; 
     overflow-x: hidden;
     /* Faint dot grid; "local" so it scrolls with the content */
@@ -465,16 +468,78 @@ section {
 
 
 
-/* Scroll Reveal States */
-.reveal-hidden {
+/* Scroll reveals.
+   The hidden state is scoped to .motion-ready, a class an inline head script
+   adds only when JavaScript runs and prefers-reduced-motion is off. With JS
+   disabled the class never lands, so the content is simply visible. */
+html.motion-ready [data-reveal]:not([data-reveal-stagger]),
+html.motion-ready [data-reveal-stagger] > *,
+html.motion-ready [data-hero-item],
+html.motion-ready #chat-toggle {
     opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
-.reveal-hidden.visible {
-    opacity: 1;
-    transform: translateY(0);
+html.motion-ready [data-reveal]:not([data-reveal-stagger]),
+html.motion-ready [data-reveal-stagger] > *,
+html.motion-ready [data-hero-item] {
+    transform: translateY(24px);
+}
+
+/* Hover micro-interactions: one lift distance, one curve, everywhere. */
+.hero-btn,
+.hire-btn,
+.current-project-card,
+.project-link,
+.nav-links a {
+    transition:
+        transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+        box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.hero-btn:hover,
+.hero-btn:focus-visible,
+.hire-btn:hover,
+.hire-btn:focus-visible {
+    transform: translateY(-2px);
+}
+
+.current-project-card:hover {
+    transform: translateY(-4px);
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible {
+    transform: translateX(3px);
+}
+
+/* The link already underlines on hover; this just gives it somewhere to grow from. */
+.project-link:hover,
+.project-link:focus-visible {
+    transform: translateX(2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    /* Nothing animates, and nothing is left hidden waiting for an animation. */
+    html [data-reveal],
+    html [data-reveal-stagger] > *,
+    html [data-hero-item],
+    html #chat-toggle {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 
 

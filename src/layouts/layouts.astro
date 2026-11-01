@@ -82,6 +82,13 @@ const website = {
     <script is:inline>
       const theme = localStorage.getItem("theme") || "light";
       document.documentElement.setAttribute("data-theme", theme);
+
+      // Marks the document as safe to hide pre-animation content. It runs before
+      // first paint, so revealed elements never flash in then jump. With JS off
+      // the class never lands and everything renders plainly visible.
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("motion-ready");
+      }
     </script>
   </head>
 
@@ -294,7 +301,7 @@ const website = {
         {
           hasCv ? (
             <a href={CV_PATH} class="hire-btn" target="_blank" rel="noopener" data-cv>
-              Hire me
+              Download CV
             </a>
           ) : (
             <a href="mailto:mubashir.dawood4@gmail.com?subject=Hiring%20enquiry" class="hire-btn">

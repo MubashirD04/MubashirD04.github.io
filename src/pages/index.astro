@@ -11,15 +11,15 @@ import tiger_pc from "../assets/Tiger/Tiger_pc_bgr.png";
 >
   <div id="hero">
     <section id="header">
-      <p class="hero-eyebrow">Software engineer</p>
-      <h1 class="hero-title">Hi, I'm Mubashir.</h1>
-      <p class="hero-subtitle">
+      <p class="hero-eyebrow" data-hero-item>Software engineer</p>
+      <h1 class="hero-title" data-hero-item>Hi, I'm Mubashir.</h1>
+      <p class="hero-subtitle" data-hero-item>
         I build AI-native backends and the web apps on top of them, from
         bank-statement parsers and accounting engines to RAG pipelines.
       </p>
-      <div class="hero-actions">
-        <a href="/projects" class="hero-btn hero-btn-primary">View projects</a>
-        <a href="#contact" class="hero-btn hero-btn-secondary">Get in touch</a>
+      <div class="hero-actions" data-hero-item>
+        <a href="#contact" class="hero-btn hero-btn-primary">Get in touch</a>
+        <a href="/projects" class="hero-btn hero-btn-secondary">View projects</a>
       </div>
     </section>
     <div class="hero-tiger-wrapper">
@@ -36,7 +36,7 @@ import tiger_pc from "../assets/Tiger/Tiger_pc_bgr.png";
     </div>
   </div>
 
-  <section id="about-cta">
+  <section id="about-cta" data-reveal>
     <h2 class="about-heading">Let's work together</h2>
     <div class="about-text">
       <p>
@@ -48,35 +48,15 @@ import tiger_pc from "../assets/Tiger/Tiger_pc_bgr.png";
     <a href="/about" class="hero-btn hero-btn-secondary">About me</a>
   </section>
 
-  <section id="current-focus">
+  <section id="current-focus" data-reveal>
     <h2 class="section-title">Current Focus</h2>
     <div class="current-focus-subtitle">
       <p>Projects I'm currently working on</p>
     </div>
-    <div class="current-projects">
-      <div class="current-project-card" id="project-1">
-        <!-- <div class="current-project-card-image">
-                    <Image src="" alt="Project Logo" loading="lazy"/>
-                </div> -->
-        <h3>Workout Dashboard</h3>
-        <p>
-          As a fitness enthusiast and someone who likes looking at data, I
-          thought it would be cool to have a dashboard displaying all types of
-          metrics. With that idea in mind, I decided on a web app using react
-          for the front end and the Recharts library to display those metrics. I
-          also added a chatbot via groq that analyses a users data via vector
-          searching in the convex database.
-        </p>
-        <a
-          href="https://github.com/MubashirD04/Workout_Dashboard"
-          target="_blank"
-          class="project-link">GitHub</a
-        >
-      </div>
-
+    <div class="current-projects" data-reveal-stagger>
       <div
         class="current-project-card"
-        id="project-2"
+        id="project-1"
         data-wake="https://simple-books-jyn9.onrender.com/healthz"
       >
         <h3>Simple Books</h3>
@@ -93,6 +73,26 @@ import tiger_pc from "../assets/Tiger/Tiger_pc_bgr.png";
           href="https://simple-books-jyn9.onrender.com/demo"
           target="_blank"
           class="project-link">Try the demo</a
+        >
+      </div>
+
+      <div class="current-project-card" id="project-2">
+        <!-- <div class="current-project-card-image">
+                    <Image src="" alt="Project Logo" loading="lazy"/>
+                </div> -->
+        <h3>Workout Dashboard</h3>
+        <p>
+          As a fitness enthusiast and someone who likes looking at data, I
+          thought it would be cool to have a dashboard displaying all types of
+          metrics. With that idea in mind, I decided on a web app using react
+          for the front end and the Recharts library to display those metrics. I
+          also added a chatbot via groq that analyses a users data via vector
+          searching in the convex database.
+        </p>
+        <a
+          href="https://github.com/MubashirD04/Workout_Dashboard"
+          target="_blank"
+          class="project-link">GitHub</a
         >
       </div>
     </div>

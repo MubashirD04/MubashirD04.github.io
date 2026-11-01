@@ -9,6 +9,11 @@ import { setupCv } from './modules/cv.js';
 import { setupProfileStats } from './modules/profile-stats.js';
 import { initChatbot } from './modules/chatbot.js';
 import { setupAsteroidsGame } from './modules/asteroids-game.js';
+import { setupSmoothScroll } from './modules/smooth-scroll.js';
+import { setupReveal } from './modules/reveal.js';
+import { setupHeroMotion } from './modules/hero-motion.js';
+import { setupChatEntrance } from './modules/chat-entrance.js';
+import { runCleanups } from './modules/lifecycle.js';
 
 function initPortfolio() {
     setupTheme();
@@ -22,7 +27,15 @@ function initPortfolio() {
     setupProfileStats();
     initChatbot();
     setupAsteroidsGame();
-    console.log("Portfolio Initialized");
+
+    // Motion layer. Each of these registers its own teardown in lifecycle.js.
+    setupSmoothScroll();
+    setupReveal();
+    setupHeroMotion();
+    setupChatEntrance();
 }
 
 document.addEventListener('astro:page-load', initPortfolio);
+// Tear everything down before a view transition swaps the DOM, so observers,
+// animation frames and the WebGL context don't leak across navigations.
+document.addEventListener('astro:before-swap', runCleanups);
