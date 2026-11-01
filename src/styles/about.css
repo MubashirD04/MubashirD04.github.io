@@ -43,13 +43,14 @@
 }
 
 .journey-track {
-    --card: clamp(240px, 30vw, 360px);
+    --card: clamp(260px, 28vw, 340px);
     --pad-start: 10vw;
+    --rail-y: 9px;
     /* room to slide the last entry to the middle of the screen */
     --pad-end: calc(50vw - var(--card) / 2);
     position: relative;
     display: flex;
-    gap: 96px;
+    gap: 72px;
     width: max-content;
     margin: 0;
     padding: 0 var(--pad-end) 24px var(--pad-start);
@@ -61,17 +62,18 @@
 .journey-track::after {
     content: '';
     position: absolute;
-    top: 7px;
+    top: var(--rail-y);
     left: var(--pad-start);
     right: var(--pad-end);
     height: 2px;
+    border-radius: 2px;
     background: var(--text-muted);
-    opacity: 0.2;
+    opacity: 0.18;
 }
 
 .journey-track::after {
     opacity: 1;
-    background: var(--primary-color);
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
     transform: scaleX(var(--progress, 1));
     transform-origin: left;
 }
@@ -79,50 +81,88 @@
 .journey-item {
     position: relative;
     width: var(--card);
-    padding-top: 36px;
+    padding-top: 44px;
 }
 
+/* A ring on the rail that fills once the entry is the one being read. */
 .journey-dot {
     position: absolute;
     z-index: 1;
     top: 0;
     left: 0;
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     background: var(--bg-light);
     border: 2px solid var(--text-muted);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    opacity: 0.5;
+    transition: background-color 0.4s ease, border-color 0.4s ease,
+        box-shadow 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Short tick joining the dot down to its card. */
+.journey-dot::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 2px;
+    height: 16px;
+    background: currentColor;
+    color: var(--text-muted);
+    opacity: 0.25;
+    transform: translateX(-50%);
+    transition: color 0.4s ease, opacity 0.4s ease;
 }
 
 .journey-item.in-view .journey-dot {
     background: var(--primary-color);
     border-color: var(--primary-color);
+    opacity: 1;
+    box-shadow: 0 0 0 5px rgba(74, 159, 211, 0.16);
+}
+
+.journey-item.in-view .journey-dot::after {
+    color: var(--primary-color);
+    opacity: 0.55;
 }
 
 .journey-year {
+    display: inline-block;
+    margin: 0;
     font-size: var(--fs-small);
-    font-weight: 600;
-    letter-spacing: 0.08em;
+    font-weight: 700;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+    color: var(--primary-color);
 }
 
 .journey-item h3 {
-    margin: 8px 0 10px;
+    margin: 10px 0 10px;
     font-size: var(--fs-lead);
     line-height: 1.3;
 }
 
-.journey-item p:last-child {
+.journey-text {
+    margin: 0;
     line-height: 1.6;
     color: var(--text-muted);
+}
+
+/* What's current: a filled pill instead of a bare year, and a tinted edge. */
+.journey-item.is-now .journey-year {
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--primary-color);
+    color: #fff;
+    letter-spacing: 0.12em;
 }
 
 /* Pinned mode */
 .journey.is-pinned {
     /* one screen to arrive, then a stretch of scrolling per entry */
-    height: calc(100vh + var(--count) * 55vh);
+    height: calc(100vh + var(--count) * 45vh);
 }
 
 .journey.is-pinned .journey-sticky {
@@ -157,10 +197,11 @@
 
 @media (max-width: 768px) {
     .journey-track {
-        --card: 72vw;
+        --card: 74vw;
         --pad-start: 6vw;
-        gap: 32px;
+        gap: 28px;
     }
+
 }
 
 .game-card {

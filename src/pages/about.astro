@@ -2,32 +2,50 @@
 import Layouts from "../layouts/layouts.astro";
 import Contact from "../components/Contact.astro";
 
-// Placeholder entries: replace the years and text with your own. Order is oldest first.
+// Oldest first. `now` marks what's current, which the timeline styles differently.
 const timeline = [
   {
-    year: "20XX",
+    year: "Feb 2003",
+    title: "Born in Cape Town",
+    text: "Still here, and still the best city to build things from.",
+  },
+  {
+    year: "2022",
     title: "Started Computer Science at UCT",
     text: "Began a BSc in Computer Science at the University of Cape Town.",
   },
   {
     year: "2025",
     title: "Capstone: AI Content Detector",
-    text: "Final-year team project: a transformer-based detector behind a Flask API with a React frontend.",
+    text: "A fine-tuned ELECTRA transformer behind a Flask API with a React frontend, built with a team of three.",
   },
   {
-    year: "20XX",
-    title: "Graduated",
-    text: "Completed the BSc in Computer Science.",
-  },
-  {
-    year: "20XX",
+    year: "2025",
     title: "Client work: JASS annual report",
-    text: "Built an interactive microsite for Just Associates' 2025 annual report.",
+    text: "An interactive microsite presenting Just Associates' 2025 annual report.",
+  },
+  {
+    year: "Sep 2026",
+    title: "Graduated",
+    text: "Completed the BSc in Computer Science at UCT.",
+  },
+  {
+    year: "Now",
+    title: "Interning at IntelliComm",
+    text: "One of two internships I'm doing at the moment.",
+    now: true,
+  },
+  {
+    year: "Now",
+    title: "Engineer at Develop for Good",
+    text: "Building for Red de Impacto LATAM with my Develop for Good team.",
+    now: true,
   },
   {
     year: "Now",
     title: "Building Simple Books",
     text: "An AI-native accounting app for South African accountants, from bank statement to VAT201.",
+    now: true,
   },
 ];
 
@@ -178,7 +196,7 @@ const timeline = [
     </div>
   </div>
 
-  <section id="about">
+  <section id="about" data-reveal>
     <div class="about-card">
       <p>
         I'm a Computer Science graduate who finds beauty in the "under the hood"
@@ -209,11 +227,13 @@ const timeline = [
         <ol class="journey-track">
           {
             timeline.map((item) => (
-              <li class="journey-item">
+              <li class={`journey-item${item.now ? " is-now" : ""}`}>
                 <span class="journey-dot" aria-hidden="true" />
-                <p class="journey-year">{item.year}</p>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
+                <div class="journey-card">
+                  <p class="journey-year">{item.year}</p>
+                  <h3>{item.title}</h3>
+                  <p class="journey-text">{item.text}</p>
+                </div>
               </li>
             ))
           }
