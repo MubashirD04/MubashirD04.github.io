@@ -46,6 +46,14 @@ export function setupSmoothScroll() {
         frame = requestAnimationFrame(raf);
     });
 
+    // Lenis watches its content element for resizes, but here that element is
+    // the wrapper itself, whose own box never changes however much it holds.
+    // Opening a project row grew the scroll height without Lenis noticing, so
+    // the wheel stayed clamped to the collapsed page's limit. Watching what the
+    // wrapper actually scrolls past keeps that limit honest.
+    const growth = new ResizeObserver(() => lenis.resize());
+    Array.from(wrapper.children).forEach((child) => growth.observe(child));
+
     const onClick = (e) => {
         const link = e.target.closest('a[href^="#"]');
         if (!link) return;
@@ -63,6 +71,7 @@ export function setupSmoothScroll() {
 
     onCleanup(() => {
         cancelAnimationFrame(frame);
+        growth.disconnect();
         document.removeEventListener('click', onClick);
         lenis.destroy();
         lenis = null;
