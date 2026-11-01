@@ -14,8 +14,9 @@
 }
 
 .about-card {
-    /* about 65 characters a line in Outfit */
-    max-width: 580px;
+    /* about 85 characters a line in Outfit, near the top of the comfortable
+       range; the section's own 10vw padding keeps it off the edges */
+    max-width: 760px;
     margin: 0 auto;
     font-size: var(--fs-body);
     line-height: 1.7;
