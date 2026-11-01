@@ -32,7 +32,7 @@ const timeline = [
   {
     year: "Now",
     title: "Interning at IntelliComm",
-    text: "One of two internships I'm doing at the moment.",
+    text: "On the SysOps team, picking up Docker and Bash.",
     now: true,
   },
   {
@@ -68,21 +68,15 @@ const timeline = [
 
         <div class="profile-grid">
           <div class="avatar">
-            <span>🕹️</span>
+            <span class="avatar-monogram" aria-hidden="true">MD</span>
             <b>LVL 4</b>
           </div>
 
-          <div class="perks">
-            <div>
-              <span class="perk-bullet" style="--clr: #4ade80">⚡</span> +50% Async Performance
-            </div>
-            <div>
-              <span class="perk-bullet" style="--clr: #fbbf24">🥊</span> Muay Thai Stance
-            </div>
-            <div>
-              <span class="perk-bullet" style="--clr: #f87171">🚗</span> Track Tuned Iteration
-            </div>
-          </div>
+          <ul class="perks">
+            <li>+50% Async Performance</li>
+            <li>Muay Thai Stance</li>
+            <li>Track Tuned Iteration</li>
+          </ul>
         </div>
 
         <!-- Attributes -->
@@ -92,7 +86,7 @@ const timeline = [
           <div class="stat">
             <label>Backend / Systems <span>80/100</span></label>
             <div class="bar">
-              <div class="fill" style="--clr: var(--primary-color); --val: 80%">
+              <div class="fill" style="--val: 80%">
               </div>
             </div>
           </div>
@@ -100,14 +94,14 @@ const timeline = [
           <div class="stat">
             <label>Frontend / UI <span>60/100</span></label>
             <div class="bar">
-              <div class="fill" style="--clr: #10b981; --val: 60%"></div>
+              <div class="fill" style="--val: 60%"></div>
             </div>
           </div>
 
           <div class="stat">
             <label>Data & Analytics <span>70/100</span></label>
             <div class="bar">
-              <div class="fill" style="--clr: #a855f7; --val: 70%"></div>
+              <div class="fill" style="--val: 70%"></div>
             </div>
           </div>
         </div>
@@ -146,7 +140,7 @@ const timeline = [
         </ol>
 
         <button class="game-exit-btn" id="gameExitBtn" type="button">
-          ✕ Exit Game
+          Exit Game
         </button>
       </div>
       </div>

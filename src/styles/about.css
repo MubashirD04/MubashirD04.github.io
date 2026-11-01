@@ -249,37 +249,69 @@
   aspect-ratio: 1;
   background: var(--footer-bg);
   border: 1px solid var(--glass-border);
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
-  font-size: 28px;
 }
-.game-card .avatar b { 
-  position: absolute; 
-  bottom: 0; 
-  width: 100%; 
-  background: var(--primary-color); 
-  color: #fff; 
-  font-size: 10px; 
-  text-align: center; 
-  padding: 2px 0; 
+
+/* A monogram instead of an icon: nothing to render inconsistently across
+   platforms, and it echoes the logo in the nav. */
+.game-card .avatar-monogram {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  color: var(--primary-color);
+  /* clears the level strip pinned to the bottom */
+  transform: translateY(-7px);
+}
+
+.game-card .avatar b {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: var(--primary-color);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-align: center;
+  padding: 3px 0;
   text-transform: uppercase;
 }
 
-.game-card .perks { 
-  display: flex; 
-  flex-direction: column; 
-  justify-content: center; 
-  gap: 6px; 
-  font-size: var(--fs-small); 
+.game-card .perks {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-small);
+  line-height: 1.35;
   color: var(--text-muted);
 }
-.game-card .perk-bullet {
-  color: var(--clr);
-  margin-right: 4px;
-  font-weight: bold;
+
+/* Markers are drawn, in the one accent colour, rather than typed as glyphs. */
+.game-card .perks li {
+  position: relative;
+  padding-left: 16px;
+}
+
+.game-card .perks li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.45em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  opacity: 0.8;
 }
 
 .game-card .attributes, 
@@ -309,19 +341,24 @@
 }
 .game-card .stat label span {
   color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
 }
 
-.game-card .bar { 
-  height: 6px; 
-  background: var(--footer-bg); 
-  border: 1px solid var(--glass-border); 
-  overflow: hidden; 
+.game-card .bar {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--footer-bg);
+  border: 1px solid var(--glass-border);
+  overflow: hidden;
 }
 
 .game-card .fill {
   height: 100%;
-  background-color: var(--clr);
-  width: 0%; 
+  border-radius: inherit;
+  /* Every attribute uses the one accent colour; the number carries the
+     difference, so three hues aren't competing inside one card. */
+  background-color: var(--primary-color);
+  width: 0%;
   transition: width 1.2s cubic-bezier(0.1, 0.8, 0.2, 1);
 }
 
