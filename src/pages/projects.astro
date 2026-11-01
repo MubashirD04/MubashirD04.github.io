@@ -32,6 +32,18 @@ const projects = [
         link: { href: "https://github.com/MubashirD04/Workout_Dashboard", label: "GitHub" },
     },
     {
+        name: "Social Network RAG",
+        summary: "Turns raw group chat exports into an interactive social graph, exposed via an API, MCP server, and web UI.",
+        overview: [
+            "Turns raw group chat exports (WhatsApp, Telegram, Slack) into an interactive directed graph using local machine learning, with no external LLM API costs for the core analysis.",
+            "It identifies key influencers (PageRank), information brokers (betweenness centrality), and community clusters, and supports semantic search (RAG) over the full conversation history. A conversation-linking layer infers likely connections between unthreaded messages, kept visually distinct from confirmed replies so a guess never inflates anyone's influence score.",
+        ],
+        tech: ["FastAPI", "NetworkX", "YAKE", "fastembed", "ONNX Runtime", "MCP", "React", "Vite"],
+        link: { href: "https://social-network-rag.vercel.app/", label: "Visit site" },
+        repo: "https://github.com/MubashirD04/Social-Network-RAG",
+        video: { src: "/media/projects/social-network-rag", label: "Analysing a Slack export in the browser, then asking what caused the production outage" },
+    },
+    {
         name: "JASS 2025 Annual Report",
         summary: "An interactive microsite for Just Associates' 2025 annual report.",
         overview: [
@@ -72,18 +84,6 @@ const projects = [
         ],
         tech: ["Go", "LLM API", "Joplin", "JSON"],
         link: { href: "https://github.com/MubashirD04/Note-Creator-CLI-Tool", label: "GitHub" },
-    },
-    {
-        name: "Social Network RAG",
-        summary: "Turns raw group chat exports into an interactive social graph, exposed via an API, MCP server, and web UI.",
-        overview: [
-            "Turns raw group chat exports (WhatsApp, Telegram, Slack) into an interactive directed graph using local machine learning, with no external LLM API costs for the core analysis.",
-            "It identifies key influencers (PageRank), information brokers (betweenness centrality), and community clusters, and supports semantic search (RAG) over the full conversation history. A conversation-linking layer infers likely connections between unthreaded messages, kept visually distinct from confirmed replies so a guess never inflates anyone's influence score.",
-        ],
-        tech: ["FastAPI", "NetworkX", "YAKE", "fastembed", "ONNX Runtime", "MCP", "React", "Vite"],
-        link: { href: "https://social-network-rag.vercel.app/", label: "Visit site" },
-        repo: "https://github.com/MubashirD04/Social-Network-RAG",
-        video: { src: "/media/projects/social-network-rag", label: "Analysing a Slack export in the browser, then asking what caused the production outage" },
     },
 ];
 
