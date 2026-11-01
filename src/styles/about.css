@@ -374,17 +374,42 @@
 
 /* Astro Blaster: flip-card + arcade overlay */
 
-.skill-tag-game {
+/* This tag launches the arcade game. On the light background the plain pills
+   all read as the same grey, so it gets a tint and a stronger border to look
+   clickable at rest instead of only on hover. Text stays --text-main: white on
+   the accent blue is about 2.9:1, too low for a pill this small. */
+.game-card .skill-tag-game {
   cursor: pointer;
   position: relative;
+  background: rgba(74, 159, 211, 0.14);
+  border-color: rgba(74, 159, 211, 0.5);
+  color: var(--text-main);
+  font-weight: 600;
   transition: var(--transition-smooth);
 }
-.skill-tag-game:hover,
-.skill-tag-game:focus-visible {
+
+/* Dark already separates it well enough, so those tags stay as they were. */
+[data-theme="dark"] .game-card .skill-tag-game {
+  background: transparent;
+  border-color: var(--glass-border);
+  color: var(--text-muted);
+  font-weight: inherit;
+}
+
+.game-card .skill-tag-game:hover,
+.game-card .skill-tag-game:focus-visible {
+  background: rgba(74, 159, 211, 0.26);
   border-color: var(--primary-color);
-  color: var(--primary-color);
+  color: var(--text-main);
   outline: none;
   transform: translateY(-1px);
+}
+
+[data-theme="dark"] .game-card .skill-tag-game:hover,
+[data-theme="dark"] .game-card .skill-tag-game:focus-visible {
+  background: transparent;
+  border-color: var(--primary-color);
+  color: var(--primary-color);
 }
 
 .arcade-stage {
