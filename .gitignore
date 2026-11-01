@@ -26,3 +26,6 @@ src/assets/Tiger/legacy/
 
 # jetbrains setting folder
 .idea/
+
+# local editor/tooling config
+.claude/
