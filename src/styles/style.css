@@ -13,6 +13,7 @@
     --glass-shadow: 0 8px 32px 0 rgba(74, 159, 211, 0.08);
     --nav-bg: rgba(74, 159, 211, 0.85);
     --nav-links-bg: rgba(106, 171, 211, 0.98);
+    --nav-scrolled-bg: rgba(239, 248, 253, 0.85); /* --bg-light, see-through */
     --footer-bg: rgba(74, 159, 211, 0.08);
     --overlay-bg: rgba(220, 235, 245, 0.6);
     --font-family: 'Outfit', sans-serif;
@@ -42,6 +43,7 @@
     --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
     --nav-bg: rgba(20, 30, 41, 0.85);
     --nav-links-bg: rgba(20, 30, 41, 0.98);
+    --nav-scrolled-bg: rgba(13, 19, 26, 0.85);
     --footer-bg: rgba(20, 30, 41, 0.4);
     --overlay-bg: rgba(10, 15, 20, 0.7);
     --about-me: #e9e9ea;
@@ -137,6 +139,28 @@ nav {
     justify-content: space-between;
     align-items: center;
     z-index: 1000;
+}
+
+/* Once the page scrolls, content passes under the nav, so it gets a frosted
+   backdrop. The blur lives on a pseudo-element: backdrop-filter on nav itself
+   would make it the containing block for the fixed .nav-links drawer. The
+   insets line it up with #page-wrapper's 20px border rather than the nav box. */
+nav::before {
+    content: '';
+    position: absolute;
+    inset: -15px 5px 0 5px;
+    z-index: -1;
+    background: var(--nav-scrolled-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+nav.nav-scrolled::before {
+    opacity: 1;
 }
 
 .logo-area {
