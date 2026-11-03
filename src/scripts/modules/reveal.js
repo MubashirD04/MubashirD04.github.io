@@ -33,6 +33,13 @@ export function setupReveal() {
             el,
             () => {
                 targets.forEach((target, i) => {
+                    // When the animation ends, Motion writes the final values
+                    // inline and cancels it. A target with its own CSS transition
+                    // on opacity or transform (the cards' hover lift) then
+                    // transitions from the stylesheet's hidden state, so it
+                    // blinks out and fades in a second time. Transitions stay
+                    // off until those inline values have landed.
+                    target.style.transition = 'none';
                     animate(
                         target,
                         {
@@ -40,7 +47,11 @@ export function setupReveal() {
                             transform: [`translateY(${REVEAL_Y}px)`, 'translateY(0px)'],
                         },
                         { duration: DUR.base, ease: EASE, delay: staggered ? i * STAGGER_STEP : 0 }
-                    );
+                    ).then(() => {
+                        // Flush the committed values before transitions return.
+                        getComputedStyle(target).opacity;
+                        target.style.transition = '';
+                    });
                 });
                 // One-shot: inView's return value stops it re-firing.
                 return undefined;
