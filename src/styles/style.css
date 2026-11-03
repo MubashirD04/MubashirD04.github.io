@@ -266,7 +266,7 @@ nav.nav-scrolled::before {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    transition: left 0.3s cubic-bezier(0.77, 0, 0.175, 1);
     box-shadow: 15px 0 40px rgba(0, 0, 0, 0.15);
     z-index: 1500;
     padding: 0;
