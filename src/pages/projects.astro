@@ -54,14 +54,15 @@ const projects = [
         video: { src: "/media/projects/jass-annual-report", label: "Opening a header menu on the JASS 2025 microsite, jumping to Branching Out, then expanding its Read More" },
     },
     {
-        name: "Tab Bridge",
-        summary: "A Firefox extension and local MCP daemon that lets Claude read the tabs you explicitly allow.",
+        name: "Sharepane",
+        summary: "A Firefox add-on and MCP server that lets Claude read the tabs you choose to share, so it can debug the page you're working on.",
         overview: [
-            "Lets Claude Code (or Claude Desktop) read the HTML, console logs, network requests, and screenshots of specific Firefox tabs you explicitly allow, plus any tab on a trusted local dev server, without a manual click every time.",
-            "A local daemon binds to 127.0.0.1 only, everything is read-only, and console/network capture is off by default until opted in per-tab.",
+            "Gives Claude Code or Claude Desktop read-only access to a shared Firefox tab's HTML, screenshots, console logs and network requests. A tab is visible only after you turn on Share with Claude in the toolbar popup, and tabs on local dev-server ports are shared automatically.",
+            "The add-on is on addons.mozilla.org, and one command (npx sharepane setup) registers a native-messaging helper that Firefox starts by itself and adds the MCP server to Claude. Claude can't click, type or navigate, and console, network and screenshot capture each stay off until you turn them on.",
         ],
-        tech: ["TypeScript", "WebSocket", "MCP", "Firefox WebExtensions API"],
-        link: { href: "https://github.com/MubashirD04/Tab-bridge", label: "GitHub" },
+        tech: ["TypeScript", "MCP", "Firefox WebExtensions API", "Native Messaging", "Node.js"],
+        link: { href: "https://addons.mozilla.org/firefox/addon/sharepane/", label: "Get the add-on" },
+        repo: "https://github.com/MubashirD04/sharepane",
     },
     {
         name: "AI Content Detector",
